@@ -12,6 +12,7 @@ App web para la gestión de reservas diaras de habitaciones.
  heroku login
  pip install -U pip
  pip install -r dev_requirements.txt
+ python manage.py migrate
  ./manage.py runserver
  ```
 
