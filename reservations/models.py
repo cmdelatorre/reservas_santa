@@ -17,7 +17,9 @@ class Reservation(models.Model):
     notes = models.TextField("notas", blank=True, default="")
 
     def __str__(self):
-        return "Reserva de {r.user} ({r.from_date} al {r.to_date})".format(r=self)
+        return "{r.id}) Reserva de {r.user} ({r.from_date} al {r.to_date})".format(
+            r=self
+        )
 
     class Meta:
         ordering = ["from_date", "to_date"]

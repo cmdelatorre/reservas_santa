@@ -6,4 +6,6 @@ class ReservationsConfig(AppConfig):
     verbose_name = "Reservas"
 
     def ready(self):
-        from .signals import *
+        from reservations.signals import validate_reservation
+
+        print("algo")
