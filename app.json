@@ -1,0 +1,22 @@
+{
+  "name": "Reserva de habitaciones en Santa",
+  "description": "Una app de uso familiar para reservar habitaciones en un complejo común.",
+  "image": "heroku/python",
+  "repository": "https://github.com/cmdelatorre/reservas_santa",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ],
+  "env": {
+    "SECRET_KEY": {
+      "description": "The secret key for the Django application.",
+      "generator": "secret"
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "python manage.py collectstatic --noinput",
+        "test": "python manage.py test"
+      }
+    }
+  }
+}
