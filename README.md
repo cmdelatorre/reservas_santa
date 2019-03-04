@@ -16,3 +16,10 @@ App web para la gestión de reservas diaras de habitaciones.
  ./manage.py runserver
  ```
 
+# Admin
+
+Seguí este tutorial para poner en marcha la app en Heroku:
+
+https://devcenter.heroku.com/articles/getting-started-with-python
+
+De paso, indica todo el tipo de operaciones que se pueden realizar.
