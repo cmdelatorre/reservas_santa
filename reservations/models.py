@@ -14,7 +14,7 @@ class Reservation(models.Model):
         on_delete=models.CASCADE,
         related_name="reservas",
     )
-    notas = models.TextField("notas", blank=True, default="")
+    notes = models.TextField("notas", blank=True, default="")
 
     def __str__(self):
         return "Reserva de {r.user} ({r.from_date} al {r.to_date})".format(r=self)

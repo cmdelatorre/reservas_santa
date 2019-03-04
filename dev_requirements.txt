@@ -2,3 +2,4 @@
 
 black==18.9b0
 pre-commit==1.14.4
+django-extensions==2.1.6
