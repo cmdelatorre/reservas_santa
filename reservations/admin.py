@@ -13,6 +13,11 @@ class MyReservationAdminForm(forms.ModelForm):
         from_date = cleaned_data.get("from_date")
         to_date = cleaned_data.get("to_date")
 
+        if from_date >= to_date:
+            self.add_error(
+                "from_date", "La fecha Desde tiene que ser anterior a la de Hasta"
+            )
+
         if self.instance:
             reservations = Reservation.objects.exclude(id=self.instance.id)
         else:
@@ -30,10 +35,10 @@ class MyReservationAdminForm(forms.ModelForm):
         )
 
         if conflicting_rooms:
-            rooms = [str(r) for r in Room.objects.filter(id__in=conflicting_rooms)]
-            msg = "Invalid rooms selection. Rooms already reserved for the period: {}".format(
-                rooms
+            rooms = ", ".join(
+                str(r) for r in Room.objects.filter(id__in=reserved_rooms_ids)
             )
+            msg = "Error. En ese período ya se encuentran reservadas: {}".format(rooms)
             self.add_error("rooms", msg)
 
 
