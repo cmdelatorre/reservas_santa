@@ -4,6 +4,9 @@ from reservations.models import Reservation
 from rooms.models import Room
 
 
+# TODO: validar rooms no empty
+
+
 class ReservationValidationFormMixin(forms.ModelForm):
     """Mixin to validate a reservation: dates and room"""
 
