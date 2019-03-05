@@ -1,0 +1,15 @@
+{% extends "reservations/base.html" %}
+
+{% block nav_form_create %}
+<!-- No create form -->
+{% endblock %}
+
+{% block main %}
+
+  <form action="{% url 'reservations:create' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
+
+{% endblock %}

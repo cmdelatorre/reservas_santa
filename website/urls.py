@@ -20,5 +20,5 @@ admin.autodiscover()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("reservas/", include("reservations.urls")),
+    path("reservas/", include("reservations.urls", namespace="reservations")),
 ]
