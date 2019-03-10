@@ -1,4 +1,5 @@
 from datetime import date
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
@@ -7,8 +8,8 @@ from reservations.models import Reservation
 from reservations.forms import ReservationCreationForm
 
 
-class ReservationsListView(ListView):
-
+class ReservationsListView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy("login")
     http_method_names = ["get"]
     model = Reservation
     template_name = "reservations/index.html"
@@ -21,7 +22,8 @@ class ReservationsListView(ListView):
         return context
 
 
-class ReservationCreate(CreateView):
+class ReservationCreate(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy("login")
     model = Reservation
     form_class = ReservationCreationForm
     # fields = ["from_date", "to_date", "rooms", "notes"]
