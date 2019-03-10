@@ -13,12 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+
+from reservations.views import ReservationsListView
 
 admin.autodiscover()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("reservas/", include("reservations.urls", namespace="reservations")),
+    path("", ReservationsListView.as_view()),
+    path("", include("reservations.urls", namespace="reservations")),
+    path("usuarios/", include("django_registration.backends.activation.urls")),
+    path("usuarios/", include("django.contrib.auth.urls")),
 ]
+
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

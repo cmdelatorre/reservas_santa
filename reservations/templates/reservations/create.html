@@ -4,7 +4,7 @@
 <!-- No create form -->
 {% endblock %}
 
-{% block main %}
+{% block content %}
 
   <form action="{% url 'reservations:create' %}" method="post">
     {% csrf_token %}

@@ -32,14 +32,16 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "reservations",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_registration",
+    "bootstrap4",
     "rooms",
-    "reservations",
 ]
 
 MIDDLEWARE = [
@@ -117,7 +119,14 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
+# https://django-registration.readthedocs.io/en/3.0/quickstart.html
+
+ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
+
+
 django_heroku.settings(locals())
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 try:
     from .local_settings import *
