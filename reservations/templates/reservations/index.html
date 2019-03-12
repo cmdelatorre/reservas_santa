@@ -1,8 +1,61 @@
 {% extends "reservations/base.html" %}
 
+{% block extrahead %}
+  <link
+      crossorigin="anonymous"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css"
+      rel="stylesheet">
+{% endblock extrahead %}
+
+{% block extra_js %}
+  <script
+      crossorigin="anonymous"
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js">
+  </script>
+  <script
+      crossorigin="anonymous"
+      src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js">
+  </script>
+
+
+  <script>
+    $(function() {
+
+      var sourcesFormat = [
+        {color: '#247BA0', textColor: 'white'}, {color: '#F3FFBD', textColor: 'black'},
+        {color: '#02C39A', textColor: 'black'}, {color: '#E5989B', textColor: 'black'},
+        {color: '#028090', textColor: 'black'}, {color: '#70C1B3', textColor: 'black'},
+        {color: '#00A896', textColor: 'black'}, {color: '#B2DBBF', textColor: 'black'},
+        {color: '#F0F3BD', textColor: 'black'}, {color: '#FFCDB2', textColor: 'black'},
+        {color: '#FFB4A2', textColor: 'black'}, {color: '#FF1654', textColor: 'black'},
+        {color: '#B5838D', textColor: 'black'}, {color: '#6D6875', textColor: 'black'}
+      ];  // an arbitrary number of options, hoping they'll be more than the number of rooms
+
+      var eventSources = [{% for r in rooms %}
+        {  // {{ r.name }}
+          url: '/events/{{r.id}}/',
+          color: sourcesFormat[{{forloop.counter0}}].color,
+          textColor: sourcesFormat[{{forloop.counter0}}].textColor
+        },
+      {% endfor %}];
+
+
+      $('#calendar').fullCalendar({
+        defaultView: 'month',
+        eventSources: eventSources
+      })
+    });
+  </script>
+{% endblock extra_js %}
+
+
+
 {% block content %}
 
   <h1>Reservas</h1>
+
+
+  <div id='calendar'></div>
 
   <h2>Próximas</h2>
 

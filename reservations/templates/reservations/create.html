@@ -1,148 +1,42 @@
 {% extends "reservations/base.html" %}
+{% load bootstrap4 %}
+
 
 {% block nav_form_create %}
 <!-- No create form -->
 {% endblock %}
 
 {% block content %}
+<div class="row">
+  <div class="col">
 
-  <form action="{% url 'reservations:create' %}" method="post">
+  <form action="{% url 'reservations:create' %}" method="post" class="form" >
     {% csrf_token %}
 
-    {% if form.subject.errors %}
-    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-      <div class="card-header">Errors</div>
-      <div class="card-body">
-        <p class="card-text">{{ form.non_field_errors }}</p>
-      </div>
-    </div>
-    {% endif %}
+    {% bootstrap_form_errors form type='non_fields' %}
 
-    <div class="form-row">
-
-      <div class="col form-group">
-        <div class="form-check">
-          <label for="id_from_date" class="form-check-label">Desde</label>
-          <input
-              type="text"
-              name="from_date"
-              class="form-control form-check-input {% if form.from_date.errors %}is-invalid{% endif %}"
-              required
-              id="id_from_date"
-              value="{{ form.from_date.value|default:'' }}"
-            >
-
-          {% for error in form.from_date.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-
-        </div>
-      </div>
-
-      <div class="col form-group">
-        <div class="form-check">
-          <label for="id_to_date" class="form-check-label">Hasta</label>
-          <input
-              type="text"
-              name="to_date"
-              class="form-control form-check-input {% if form.to_date.errors %}is-invalid{% endif %}"
-              required
-              id="id_to_date"
-              value="{{ form.to_date.value|default:'' }}"
-            >
-
-          {% for error in form.to_date.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-
-    <div class="form-row">
-
-      <div class="col form-group">
-        <div class="form-check">
-          <label for="id_rooms" class="form-check-label">Habitaciones</label>
-          <select
-              name="rooms"
-              required=""
-              id="id_rooms"
-              multiple=""
-              class="custom-select custom-select-lg {% if form.rooms.errors %}is-invalid{% endif %}">
-              <option value="1">Pieza de Manina</option>
-
-              <option value="2">Pieza de la pileta</option>
-
-              <option value="4">Pieza del alto</option>
-
-              <option value="3">Pieza del monturero</option>
-
-            </select>
-
-          {% for error in form.rooms.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-
-
-    </div>
-
-
-
-
-    <div class="form-row">
+    <div class="row">
       <div class="col">
+        {% bootstrap_field form.from_date layout='' size='sm' %}
+      </div>
+        <div class="col">
+          {% bootstrap_field form.to_date layout='' size='sm' %}
+        </div>
+    </div>
+    {% bootstrap_field form.rooms layout='' size='lg' %}
+    {% bootstrap_field form.notes  %}
+
+      {% buttons %}
+
+      <div class="form-group bmd-form-group">
           <button type="submit" class="btn btn-outline-success">Reservar</button>
       </div>
-    </div>
+
+      {% endbuttons %}
+
 
   </form>
 
+</div>
+</div>
 {% endblock %}
-
-<!--
-      <label for="id_from_date">
-      Desde:</label>
-    </th>
-      <td>
-      <ul class="errorlist">
-      <li>
-      La fecha Desde tiene que ser anterior a la de Hasta</li>
-    </ul>
-      <input type="text" name="from_date" value="2019-03-16" required id="id_from_date">
-
-      <label for="id_to_date">
-  Hasta:</label>
-</th>
-  <td>
-  <input type="text" name="to_date" value="2019-03-15" required id="id_to_date">
-
-  <label for="id_rooms">
-  Habitación reservada:</label>
-</th>
-  <td>
-  <ul class="errorlist">
-  <li>
-  Error. En ese período ya se encuentran reservadas: Pieza de Manina, Pieza de la pileta, Pieza del monturero</li>
-</ul>
-  <select name="rooms" required id="id_rooms" multiple>
-</select>
-
-  <label for="id_notes">
-  Notas:</label>
-</th>
-  <td>
-  <textarea name="notes" cols="40" rows="10" id="id_notes">
-
-    <input type="submit" value="Submit">
-
-  </form>
-
--->

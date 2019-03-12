@@ -6,13 +6,13 @@ class Reservation(models.Model):
     from_date = models.DateField("desde")
     to_date = models.DateField("hasta")
     rooms = models.ManyToManyField(
-        "rooms.room", verbose_name="Habitación reservada", related_name="reservas"
+        "rooms.room", verbose_name="Habitación reservada", related_name="reservations"
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name="persona",
         on_delete=models.CASCADE,
-        related_name="reservas",
+        related_name="reservations",
     )
     notes = models.TextField("notas", blank=True, default="")
 

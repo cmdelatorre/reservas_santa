@@ -43,7 +43,7 @@ class ReservationValidationFormMixin(forms.ModelForm):
             rooms = ", ".join(
                 str(r) for r in Room.objects.filter(id__in=reserved_rooms_ids)
             )
-            msg = "Error. En ese período ya se encuentran reservadas: {}".format(rooms)
+            msg = "En ese período hay conflictos con reservas de: {}".format(rooms)
             self.add_error("rooms", msg)
 
 
@@ -52,6 +52,18 @@ class MyReservationAdminForm(ReservationValidationFormMixin):
 
 
 class ReservationCreationForm(ReservationValidationFormMixin):
+    from_date = forms.DateField(
+        label="Desde", widget=forms.DateInput(attrs={"type": "date"})
+    )
+    to_date = forms.DateField(
+        label="Hasta", widget=forms.DateInput(attrs={"type": "date"})
+    )
+
     class Meta:
         model = Reservation
-        fields = ["from_date", "to_date", "rooms", "notes"]
+        # fields = ["from_date", "to_date", "rooms", "notes"]
+        exclude = ("user",)
+        help_texts = {
+            "rooms": "Seleccione múltiples habitaciones dejando apretado Ctrl",
+            "notes": "Opcional. Cualquier mensaje que consideres oportuno.",
+        }
