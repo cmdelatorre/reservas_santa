@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -56,7 +56,9 @@ class RoomReservations(BaseDetailView):
                     room=room.name, user=r.user.get_full_name()
                 ),
                 "start": str(r.from_date),
-                "end": str(r.to_date),
+                "end": str(
+                    r.to_date + timedelta(days=1)
+                ),  # Because full-calendar events ;-)
             }
             for r in reservations
         ]
