@@ -1,1 +1,1 @@
-{{ site.name }}: Please activate your account.
+Santa Reserva: Por favor, activa tu cuenta.

@@ -21,10 +21,40 @@ from reservations.views import ReservationsListView
 
 admin.autodiscover()
 
+from django import forms
+
+from django_registration.backends.activation.views import RegistrationView
+from django_registration.forms import RegistrationForm
+
+
+class MyCustomUserForm(RegistrationForm):
+
+    first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
+    last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
+    email = forms.EmailField(
+        max_length=254, help_text="Required. Inform a valid email address."
+    )
+
+    class Meta(RegistrationForm.Meta):
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        )
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", ReservationsListView.as_view()),
     path("", include("reservations.urls", namespace="reservations")),
+    path(
+        r"usuarios/register/",
+        RegistrationView.as_view(form_class=MyCustomUserForm),
+        name="django_registration_register",
+    ),
     path("usuarios/", include("django_registration.backends.activation.urls")),
     path("usuarios/", include("django.contrib.auth.urls")),
 ]

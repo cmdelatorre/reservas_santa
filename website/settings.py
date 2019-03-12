@@ -126,7 +126,23 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 
 django_heroku.settings(locals())
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+username = os.environ.get("DJANGO_MAIL_HOST_USER", None)
+password = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD", None)
+
+if not (username and password):
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    print("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+else:
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_HOST_USER = username
+    EMAIL_HOST_PASSWORD = password
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = "No contestar <santacatalinareservas@gmail.com>"
+    EMAIL_SUBJECT_PREFIX = "[Reservas Santa] "
 
 try:
     from .local_settings import *
