@@ -53,7 +53,7 @@ class RoomReservations(BaseDetailView):
         data = [
             {
                 "title": "{room} ({user})".format(
-                    room=room.name, user=r.user.get_full_name()
+                    room=room.name, user=r.user.get_full_name() or r.user.get_username()
                 ),
                 "start": str(r.from_date),
                 "end": str(

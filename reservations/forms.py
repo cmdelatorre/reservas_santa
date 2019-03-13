@@ -53,10 +53,14 @@ class MyReservationAdminForm(ReservationValidationFormMixin):
 
 class ReservationCreationForm(ReservationValidationFormMixin):
     from_date = forms.DateField(
-        label="Desde", widget=forms.DateInput(attrs={"type": "date"})
+        label="Desde",
+        widget=forms.DateInput(attrs={"type": "date"}),
+        help_text="Fecha de la primer noche",
     )
     to_date = forms.DateField(
-        label="Hasta", widget=forms.DateInput(attrs={"type": "date"})
+        label="Hasta",
+        widget=forms.DateInput(attrs={"type": "date"}),
+        help_text="Fecha de salida (esa noche no se usa habitación)",
     )
 
     class Meta:
@@ -64,6 +68,8 @@ class ReservationCreationForm(ReservationValidationFormMixin):
         # fields = ["from_date", "to_date", "rooms", "notes"]
         exclude = ("user",)
         help_texts = {
+            "from_date": "Fecha de la primer noche",
+            "to_date": "Fecha de salida (esa noche no se usa habitación)",
             "rooms": "Seleccione múltiples habitaciones dejando apretado Ctrl",
             "notes": "Opcional. Cualquier mensaje que consideres oportuno.",
         }

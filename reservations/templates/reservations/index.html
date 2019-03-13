@@ -16,7 +16,10 @@
       crossorigin="anonymous"
       src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js">
   </script>
-
+  <script
+    crossorigin="anonymous"
+    src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/locale/es.js">
+</script>
 
   <script>
     $(function() {
@@ -42,6 +45,7 @@
 
       $('#calendar').fullCalendar({
         defaultView: 'month',
+        firstDay: 1,  // Monday
         eventSources: eventSources
       })
     });
@@ -51,77 +55,98 @@
 
 
 {% block content %}
-
-  <h1>Reservas</h1>
-
-
-  <div id='calendar'></div>
-
-  <h2>Próximas</h2>
-
-  <div class="table-responsive-sm">
-    <table class="table table-hover table-borderless table-striped">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">Desde</th>
-          <th scope="col">Hasta</th>
-          <th scope="col">Habitaciones</th>
-          <th scope="col">Quién</th>
-        </tr>
-      </thead>
-      <tbody>
-
-          {% for r in next %}
-            <tr>
-              <th scope="row">{{ r.from_date|date:"d/m/y" }}</th>
-              <td>{{ r.to_date|date:"d/m/y" }}</td>
-              <td>
-                <ul style="padding-inline-start: 20px;">
-                    {% for room in r.rooms.all %}
-                    <li>{{ room }}</li>
-                    {% endfor %}
-                </ul>
-              </td>
-              <td>{{ r.user }}</td>
-            </tr>
-          {% endfor %}
-
-      </tbody>
-    </table>
+  <div class="row pt-2">
+    <div class="col">
+      <h1>Reservas</h1>
+    </div>
   </div>
 
+  <div class="row pt-5">
+      <div class="col">
+    <div id='calendar'></div>
+  </div>
+</div>
 
-  <h2>Pasadas</h2>
 
-  <div class="table-responsive-sm">
-      <table class="table table-hover table-borderless table-striped">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Desde</th>
-            <th scope="col">Hasta</th>
-            <th scope="col">Habitaciones</th>
-            <th scope="col">Quién</th>
-          </tr>
-        </thead>
-        <tbody>
+<div class="row pt-5">
+  <div class="col">
+      <h2>Próximas</h2>
+  </div>
+</div>
 
-            {% for r in past %}
-              <tr>
-                <th scope="row">{{ r.from_date|date:"d/m/y" }}</th>
-                <td>{{ r.to_date|date:"d/m/y" }}</td>
-                <td>
-                  <ul style="padding-inline-start: 20px;">
-                    {% for room in r.rooms.all %}
-                      <li>{{ room }}</li>
-                    {% endfor %}
-                  </ul>
-                </td>
-                <td>{{ r.user }}</td>
-              </tr>
-            {% endfor %}
+<div class="row pt-2">
+  <div class="col">
+    <h5>Desde</h5>
+  </div>
 
-        </tbody>
-      </table>
+  <div class="col">
+    <h5>Hasta</h5>
+  </div>
+
+  <div class="col-4">
+    <h5>Habitaciones</h5>
+  </div>
+
+  <div class="col-2">
+    <h5>Quién</h5>
+  </div>
+</div>
+
+  {% for r in next %}
+    <div class="row border-top">
+      <div class="col">{{ r.from_date|date:"d/m/y" }}</div>
+      <div class="col">{{ r.to_date|date:"d/m/y" }}</div>
+      <div class="col-4">
+        <ul style="padding-inline-start: 20px;">
+          {% for room in r.rooms.all %}
+            <li>{{ room }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-2">{{ r.user.get_full_name|default:r.user.get_username }}</div>
     </div>
+  {% endfor %}
+
+
+
+<div class="row pt-5">
+  <div class="col">
+    <h2>Pasadas</h2>
+  </div>
+</div>
+
+<div class="row pt-2">
+  <div class="col">
+    <h5>Desde</h5>
+  </div>
+
+  <div class="col">
+    <h5>Hasta</h5>
+  </div>
+
+  <div class="col-4">
+    <h5>Habitaciones</h5>
+  </div>
+
+  <div class="col-2">
+    <h5>Quién</h5>
+  </div>
+</div>
+
+{% for r in past %}
+  <div class="row border-top">
+    <div class="col">{{ r.from_date|date:"d/m/y" }}</div>
+    <div class="col">{{ r.to_date|date:"d/m/y" }}</div>
+    <div class="col-4">
+      <ul style="padding-inline-start: 20px;">
+        {% for room in r.rooms.all %}
+          <li>{{ room }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-2">{{ r.user.get_full_name|default:r.user.get_username }}</div>
+  </div>
+{% endfor %}
+
 
   {% endblock %}
