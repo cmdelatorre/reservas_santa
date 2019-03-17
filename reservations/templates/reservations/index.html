@@ -25,18 +25,18 @@
     $(function() {
 
       var sourcesFormat = [
-        {color: '#247BA0', textColor: 'white'}, {color: '#F3FFBD', textColor: 'black'},
+        {color: '#7AC143', textColor: 'white'}, {color: '#F3FFBD', textColor: 'black'},
         {color: '#02C39A', textColor: 'black'}, {color: '#E5989B', textColor: 'black'},
-        {color: '#028090', textColor: 'black'}, {color: '#70C1B3', textColor: 'black'},
-        {color: '#00A896', textColor: 'black'}, {color: '#B2DBBF', textColor: 'black'},
+        {color: '#028090', textColor: 'black'}, {color: '#00A896', textColor: 'black'},
+        {color: '#6D6875', textColor: 'black'}, {color: '#B2DBBF', textColor: 'black'},
         {color: '#F0F3BD', textColor: 'black'}, {color: '#FFCDB2', textColor: 'black'},
-        {color: '#FFB4A2', textColor: 'black'}, {color: '#FF1654', textColor: 'black'},
-        {color: '#B5838D', textColor: 'black'}, {color: '#6D6875', textColor: 'black'}
+        {color: '#FFB4A2', textColor: 'black'}, {color: '#B5838D', textColor: 'black'},
+        {color: '#247BA0', textColor: 'black'}, {color: '#FF1654', textColor: 'black'}
       ];  // an arbitrary number of options, hoping they'll be more than the number of rooms
 
       var eventSources = [{% for r in rooms %}
         {  // {{ r.name }}
-          url: '/events/{{r.id}}/',
+          url: "{% url 'reservations:events' r.id %}",
           color: sourcesFormat[{{forloop.counter0}}].color,
           textColor: sourcesFormat[{{forloop.counter0}}].textColor
         },
@@ -46,7 +46,19 @@
       $('#calendar').fullCalendar({
         defaultView: 'month',
         firstDay: 1,  // Monday
-        eventSources: eventSources
+        eventSources: eventSources,
+        eventRender: function(event, element) {
+          var helpText = "Habitación reservada por " + event.user;
+          var title = '<span class="text-muted">'+event.room+" <small>("+event.user+")</small></span>";
+          if (event.owned) {
+            title = "<strong>"+event.room+"</strong> <small><em>(editar reserva)</em></small>";
+            helpText = "Reserva propia";
+          }
+
+          element.prop("title", helpText);
+
+          element.find(".fc-title").empty().append(title);
+        }
       });
 
       $('[data-toggle="tooltip"]').tooltip()

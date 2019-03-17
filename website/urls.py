@@ -46,12 +46,15 @@ class MyCustomUserForm(RegistrationForm):
         )
 
 
+from django.views.generic import TemplateView
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", ReservationsListView.as_view()),
-    path("", include("reservations.urls", namespace="reservations")),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("reservas/", include("reservations.urls", namespace="reservations")),
     path(
-        r"usuarios/register/",
+        "usuarios/register/",
         RegistrationView.as_view(form_class=MyCustomUserForm),
         name="django_registration_register",
     ),

@@ -63,7 +63,7 @@ class ReservationDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("reservations:index")
 
 
-class RoomReservations(BaseDetailView):
+class RoomReservations(LoginRequiredMixin, BaseDetailView):
     model = Room
     http_method_names = ["get"]
     pk_url_kwarg = "room_id"
@@ -80,10 +80,15 @@ class RoomReservations(BaseDetailView):
                 "title": "{room} ({user})".format(
                     room=room.name, user=r.user.get_full_name() or r.user.get_username()
                 ),
+                "room": room.name,
+                "user": r.user.get_full_name() or r.user.get_username(),
                 "start": str(r.from_date),
                 "end": str(
                     r.to_date + timedelta(days=1)
                 ),  # Because full-calendar events ;-)
+                "url": r.user == request.user
+                and reverse_lazy("reservations:edit", args=[r.id]),
+                "owned": r.user == request.user,
             }
             for r in reservations
         ]
