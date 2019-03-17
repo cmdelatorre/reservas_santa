@@ -1,69 +1,50 @@
+{% for row in reservations %}
+<div class="card-deck pb-3">
 
-<div class="row pt-2">
-    <div class="col">
-        <h5>Desde</h5>
+{% for r in row %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            {{ r.user.get_full_name|default:r.user.get_username }}
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">Del {{ r.from_date|date:"d/m/y" }} al {{ r.to_date|date:"d/m/y" }}</h5>
+            <p class="card-text text-muted">{{ r.notes }}</p>
+
+        </div>
+
+        <ul class="list-group list-group-flush">
+            {% for room in r.rooms.all %}
+                <li class="list-group-item">{{ room }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if r.user == user %}
+        <div class="card-footer text-muted">
+            <a
+                    href="{% url 'reservations:edit' r.id %}"
+                    role="button"
+                    class="btn btn-outline-success btn-sm"
+                    title="Modificar"
+                    data-toggle="tooltip"
+                    data-placement="left">
+                <i class="material-icons">edit</i>
+            </a>
+            <a
+                    href="#"
+                    role="button"
+                    class="btn btn-outline-danger btn-sm"
+                    title="Cancelar reserva"
+                    data-toggle="tooltip"
+                    data-placement="left">
+                <i class="material-icons">delete_forever</i>
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 
-    <div class="col">
-        <h5>Hasta</h5>
-    </div>
-
-    <div class="col-2">
-        <h5>Habitaciones</h5>
-    </div>
-
-    <div class="col">
-        <h5>Quién</h5>
-    </div>
-
-    <div class="col">
-        <h5>Notas</h5>
-    </div>
-
-    <div class="col">
-        <h5>Acciones</h5>
-    </div>
+{% endfor %}
 
 </div>
-
-{% for r in reservations %}
-    <div class="row border-top">
-        <div class="col">{{ r.from_date|date:"d/m/y" }}</div>
-        <div class="col">{{ r.to_date|date:"d/m/y" }}</div>
-        <div class="col-2">
-            <ul style="padding-inline-start: 20px;">
-            {% for room in r.rooms.all %}
-                <li>{{ room }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        <div class="col">{{ r.user.get_full_name|default:r.user.get_username }}</div>
-        <div class="col">{{ r.notes }}</div>
-        <div class="col">
-            {% if r.user == user %}
-            <span class="align-middle">
-                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                    <a
-                            href="{% url 'reservations:edit' r.id %}"
-                            role="button"
-                            class="btn btn-outline-primary btn-sm"
-                            title="Modificar"
-                            data-toggle="tooltip"
-                            data-placement="left">
-                        <i class="material-icons">edit</i>
-                    </a>
-                    <a
-                            href="#"
-                            role="button"
-                            class="btn btn-outline-danger btn-sm"
-                            title="Cancelar reserva"
-                            data-toggle="tooltip"
-                            data-placement="left">
-                        <i class="material-icons">delete_forever</i>
-                    </a>
-                </div>
-            </span>
-            {% endif %}
-        </div>
-    </div>
 {% endfor %}

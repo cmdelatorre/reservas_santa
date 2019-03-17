@@ -21,8 +21,12 @@ class ReservationsListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = date.today()
-        context["next"] = Reservation.objects.filter(from_date__gte=today)
-        context["past"] = Reservation.objects.filter(from_date__lt=today)
+
+        def tuples_3(l):
+            return (l[i : i + 3] for i in range(0, len(l), 3))
+
+        context["next"] = tuples_3(Reservation.objects.filter(from_date__gte=today))
+        context["past"] = tuples_3(Reservation.objects.filter(from_date__lt=today))
         context["rooms"] = Room.objects.all()
         return context
 
