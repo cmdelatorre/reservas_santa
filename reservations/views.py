@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DeleteView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import BaseDetailView
 
@@ -57,6 +57,12 @@ class ReservationEdit(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+class ReservationDelete(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy("login")
+    model = Reservation
+    success_url = reverse_lazy("reservations:index")
+
+
 class RoomReservations(BaseDetailView):
     model = Room
     http_method_names = ["get"]
@@ -65,7 +71,9 @@ class RoomReservations(BaseDetailView):
     def get(self, request, room_id):
         room = self.get_object()
         params = self.request.GET
-        reservations = room.filter_reservations(params["start"], params["end"])
+        reservations = room.filter_reservations_that_intersect(
+            params["start"], params["end"]
+        )
 
         data = [
             {

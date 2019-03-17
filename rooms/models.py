@@ -7,13 +7,13 @@ class Room(models.Model):
     def __str__(self):
         return self.name
 
-    def filter_reservations(self, start, end):
-        """Filter the Room reservations between start (inclusive) and end (exclusive) dates.
+    def filter_reservations_that_intersect(self, start, end):
+        """Filter the Room reservations that intersect with the given period.
 
         Returns a Reservations Queryset
 
         """
-        return self.reservations.filter(from_date__gte=start, to_date__lte=end)
+        return self.reservations.exclude(to_date__gt=end).exclude(to_date__lte=start)
 
     class Meta:
         ordering = ["name"]

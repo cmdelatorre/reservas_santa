@@ -3,24 +3,23 @@
 
 {% for r in row %}
     <div class="card" style="width: 18rem;">
+
         <div class="card-header">
             {{ r.user.get_full_name|default:r.user.get_username }}
         </div>
 
         <div class="card-body">
             <h5 class="card-title">Del {{ r.from_date|date:"d/m/y" }} al {{ r.to_date|date:"d/m/y" }}</h5>
-            <p class="card-text text-muted">{{ r.notes }}</p>
-
+            <ul class="list-group">
+                {% for room in r.rooms.all %}
+                    <li class="list-group-item">{{ room }}</li>
+                {% endfor %}
+            </ul>
+            <p class="card-text text-muted"><i>{{ r.notes }}</i></p>
         </div>
 
-        <ul class="list-group list-group-flush">
-            {% for room in r.rooms.all %}
-                <li class="list-group-item">{{ room }}</li>
-            {% endfor %}
-        </ul>
-
         {% if r.user == user %}
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted text-right">
             <a
                     href="{% url 'reservations:edit' r.id %}"
                     role="button"
@@ -31,7 +30,7 @@
                 <i class="material-icons">edit</i>
             </a>
             <a
-                    href="#"
+                    href="{% url 'reservations:delete' r.id %}"
                     role="button"
                     class="btn btn-outline-danger btn-sm"
                     title="Cancelar reserva"
