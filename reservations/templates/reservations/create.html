@@ -29,7 +29,18 @@
       {% buttons %}
 
       <div class="form-group bmd-form-group">
-          <button type="submit" class="btn btn-outline-success">Reservar</button>
+        <button type="submit" class="btn btn-outline-success">Reservar</button>
+        {% if object %}
+        <a
+            href="{% url 'reservations:delete' object.id %}"
+            role="button"
+            class="btn btn-danger btn-sm float-right"
+            title="Borrar reserva"
+            data-toggle="tooltip"
+            data-placement="left">
+          <i class="material-icons">delete_forever</i>
+        </a>
+        {% endif %}
       </div>
 
       {% endbuttons %}
