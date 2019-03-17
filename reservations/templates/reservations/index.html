@@ -47,7 +47,10 @@
         defaultView: 'month',
         firstDay: 1,  // Monday
         eventSources: eventSources
-      })
+      });
+
+      $('[data-toggle="tooltip"]').tooltip()
+
     });
   </script>
 {% endblock extra_js %}
@@ -74,39 +77,7 @@
   </div>
 </div>
 
-<div class="row pt-2">
-  <div class="col">
-    <h5>Desde</h5>
-  </div>
-
-  <div class="col">
-    <h5>Hasta</h5>
-  </div>
-
-  <div class="col-4">
-    <h5>Habitaciones</h5>
-  </div>
-
-  <div class="col-2">
-    <h5>Quién</h5>
-  </div>
-</div>
-
-  {% for r in next %}
-    <div class="row border-top">
-      <div class="col">{{ r.from_date|date:"d/m/y" }}</div>
-      <div class="col">{{ r.to_date|date:"d/m/y" }}</div>
-      <div class="col-4">
-        <ul style="padding-inline-start: 20px;">
-          {% for room in r.rooms.all %}
-            <li>{{ room }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-2">{{ r.user.get_full_name|default:r.user.get_username }}</div>
-    </div>
-  {% endfor %}
-
+{% include "reservations/reservations_list_snippet.html" with reservations=next %}
 
 
 <div class="row pt-5">
@@ -115,38 +86,6 @@
   </div>
 </div>
 
-<div class="row pt-2">
-  <div class="col">
-    <h5>Desde</h5>
-  </div>
+{% include "reservations/reservations_list_snippet.html" with reservations=past %}
 
-  <div class="col">
-    <h5>Hasta</h5>
-  </div>
-
-  <div class="col-4">
-    <h5>Habitaciones</h5>
-  </div>
-
-  <div class="col-2">
-    <h5>Quién</h5>
-  </div>
-</div>
-
-{% for r in past %}
-  <div class="row border-top">
-    <div class="col">{{ r.from_date|date:"d/m/y" }}</div>
-    <div class="col">{{ r.to_date|date:"d/m/y" }}</div>
-    <div class="col-4">
-      <ul style="padding-inline-start: 20px;">
-        {% for room in r.rooms.all %}
-          <li>{{ room }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="col-2">{{ r.user.get_full_name|default:r.user.get_username }}</div>
-  </div>
-{% endfor %}
-
-
-  {% endblock %}
+{% endblock %}

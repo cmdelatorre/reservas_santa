@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col">
 
-  <form action="{% url 'reservations:create' %}" method="post" class="form" >
+  <form action="." method="post" class="form" >
     {% csrf_token %}
 
     {% bootstrap_form_errors form type='non_fields' %}

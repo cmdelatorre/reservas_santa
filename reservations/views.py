@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import BaseDetailView
 
 from reservations.models import Reservation
@@ -28,6 +28,19 @@ class ReservationsListView(LoginRequiredMixin, ListView):
 
 
 class ReservationCreate(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy("login")
+    model = Reservation
+    form_class = ReservationCreationForm
+    # fields = ["from_date", "to_date", "rooms", "notes"]
+    template_name = "reservations/create.html"
+    success_url = reverse_lazy("reservations:index")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class ReservationEdit(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy("login")
     model = Reservation
     form_class = ReservationCreationForm
