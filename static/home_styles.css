@@ -1,0 +1,10 @@
+body {
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Estancia_Jesuitica_de_Santa_Catalina_2.JPG/1024px-Estancia_Jesuitica_de_Santa_Catalina_2.JPG);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+div .jumbotron {
+    background-color: #212529ab;
+}

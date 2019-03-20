@@ -36,7 +36,7 @@
       <div class="collapse navbar-collapse" id="mainNavBar">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Reservas</a>
+              <a class="nav-link" href="{% url 'reservations:index' %}">Reservas</a>
             </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">
@@ -52,19 +52,19 @@
           {% block login_link %}
               {% if request.user.is_authenticated %}
                 <span class="navbar-text">
-                    Welcome {{ user.get_short_name }}
+                    Hola {{ user.get_short_name }}
                 </span>
 
                 {% if user.is_superuser %}
                   <a class="btn btn-link text-primary" href="{% url 'admin:index' %}">Administrar</a>
                 {% endif %}
 
-                <a class="btn btn-link text-secondary" href="{% url 'logout' %}">(log out)</a>
+                <a class="btn btn-link text-secondary" href="{% url 'logout' %}"> (desconectarse)</a>
               {% else %}
-                <span class="navbar-text">
+                <span class="navbar-text pr-3">
                     Welcome Guest
                 </span>
-                <a class="nav-link btn btn-success" href="{% url 'login' %}">(log in)</a>
+                <a class="nav-link btn btn-secondary" href="{% url 'login' %}">Acceder</a>
               {% endif %}
           {% endblock %}
       </div>
