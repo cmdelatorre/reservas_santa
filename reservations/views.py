@@ -53,7 +53,8 @@ class ReservationEdit(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("reservations:index")
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        if not form.instance.user:
+            form.instance.user = self.request.user
         return super().form_valid(form)
 
 
@@ -75,6 +76,10 @@ class RoomReservations(LoginRequiredMixin, BaseDetailView):
             params["start"], params["end"]
         )
 
+        can_edit = (
+            lambda reservation: reservation.user == request.user
+            or request.user.is_superuser
+        )
         data = [
             {
                 "title": "{room} ({user})".format(
@@ -86,9 +91,8 @@ class RoomReservations(LoginRequiredMixin, BaseDetailView):
                 "end": str(
                     r.to_date + timedelta(days=1)
                 ),  # Because full-calendar events ;-)
-                "url": r.user == request.user
-                and reverse_lazy("reservations:edit", args=[r.id]),
-                "owned": r.user == request.user,
+                "url": can_edit(r) and reverse_lazy("reservations:edit", args=[r.id]),
+                "owned": can_edit(r),
             }
             for r in reservations
         ]

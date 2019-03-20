@@ -54,6 +54,11 @@
                 <span class="navbar-text">
                     Welcome {{ user.get_short_name }}
                 </span>
+
+                {% if user.is_superuser %}
+                  <a class="btn btn-link text-primary" href="{% url 'admin:index' %}">Administrar</a>
+                {% endif %}
+
                 <a class="btn btn-link text-secondary" href="{% url 'logout' %}">(log out)</a>
               {% else %}
                 <span class="navbar-text">

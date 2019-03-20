@@ -18,7 +18,7 @@
             <p class="card-text text-muted"><i>{{ r.notes }}</i></p>
         </div>
 
-        {% if r.user == user %}
+        {% if r.user == user or user.is_superuser %}
         <div class="card-footer text-muted text-right">
             <a
                     href="{% url 'reservations:edit' r.id %}"

@@ -21,6 +21,15 @@ class Reservation(models.Model):
             r=self
         )
 
+    @property
+    def rooms_str(self):
+        return ", ".join(map(str, self.rooms.all()))
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse("reservations:edit", args=[str(self.id)])
+
     class Meta:
         ordering = ["from_date", "to_date"]
         verbose_name = "Reserva"
