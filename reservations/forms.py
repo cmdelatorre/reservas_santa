@@ -1,10 +1,62 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django_registration.forms import RegistrationFormUniqueEmail
 
 from reservations.models import Reservation
 from rooms.models import Room
 
 
-# TODO: validar rooms no empty
+CustomUser = get_user_model()
+
+
+# class MyCustomUserForm(RegistrationForm):
+
+#     first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
+#     last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
+#     email = forms.EmailField(
+#         max_length=254, help_text="Required. Inform a valid email address."
+#     )
+
+#     class Meta(RegistrationForm.Meta):
+#         fields = (
+#             "first_name",
+#             "last_name",
+#             "email",
+#             "password1",
+#             "password2",
+#         )
+
+
+class MyCustomUserForm(RegistrationFormUniqueEmail):
+
+    first_name = forms.CharField(
+        max_length=64,
+        required=True,
+        help_text="Requerido, por favor poné tu nombre",
+        label="Nombre",
+    )
+    last_name = forms.CharField(
+        max_length=64,
+        required=True,
+        help_text="Requerido, por favor poné tu apellido",
+        label="Apellido",
+    )
+
+    class Meta(RegistrationFormUniqueEmail.Meta):
+        model = CustomUser
+        fields = ("email", "first_name", "last_name", "password1", "password2")
+        help_texts = {
+            "email": "Requerida. Luego será usada para entrar al sitio.",
+            "password1": "No te preocupes: si te la olvidas podrás recuperarla.",
+            "password2": "La misma que pusiste antes (para asegurarnos que la escribiste bien)",
+        }
+        labels = {
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "email": "Dirección de email",
+            "password1": "Contraseña",
+            "password2": "Repetir contraseña",
+        }
 
 
 class ReservationValidationFormMixin(forms.ModelForm):

@@ -13,40 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from cuser.forms import AuthenticationForm
+from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django_registration.backends.activation.views import RegistrationView
 
 from reservations.views import ReservationsListView
+from reservations.forms import MyCustomUserForm
+
 
 admin.autodiscover()
-
-from django import forms
-
-from django_registration.backends.activation.views import RegistrationView
-from django_registration.forms import RegistrationForm
-
-
-class MyCustomUserForm(RegistrationForm):
-
-    first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
-    last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
-    email = forms.EmailField(
-        max_length=254, help_text="Required. Inform a valid email address."
-    )
-
-    class Meta(RegistrationForm.Meta):
-        fields = (
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-            "password1",
-            "password2",
-        )
-
-
-from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -59,6 +39,11 @@ urlpatterns = [
         name="django_registration_register",
     ),
     path("usuarios/", include("django_registration.backends.activation.urls")),
+    path(
+        "usuarios/login/",
+        LoginView.as_view(authentication_form=AuthenticationForm),
+        name="login",
+    ),
     path("usuarios/", include("django.contrib.auth.urls")),
 ]
 

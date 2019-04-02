@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cuser",
     "django_registration",
     "bootstrap4",
     "rooms",
@@ -124,8 +125,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 
-
-django_heroku.settings(locals())
+AUTH_USER_MODEL = "cuser.CUser"
 
 ADMINS = [
     ("Admin", "santacatalinareservas@gmail.com"),
@@ -149,6 +149,9 @@ else:
     EMAIL_USE_TLS = True
     DEFAULT_FROM_EMAIL = "No contestar <santacatalinareservas@gmail.com>"
     EMAIL_SUBJECT_PREFIX = "[Reservas Santa] "
+
+django_heroku.settings(locals())
+
 
 try:
     from .local_settings import *

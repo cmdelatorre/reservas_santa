@@ -31,7 +31,7 @@
       class="form-horizontal">
     {% csrf_token %}
 
-    {% bootstrap_field form.username layout='horizontal' %}
+    {% bootstrap_field form.email layout='horizontal' %}
     {% bootstrap_field form.password layout='horizontal' %}
     {% if next %}
       <input type="hidden" name="next" value="{{ next }}" />
