@@ -9,7 +9,7 @@ new_reservation_prefix = "Nueva reserva:"
 reservation_edit_prefix = "Una reserva a sido editada:"
 
 message_template = """
-    Quién: {r.user}
+    Quién: {user} <{r.user.email}>
     Desde: {r.from_date}
     Hasta: {r.to_date}
     Habitaciones: {r.rooms_str}
@@ -26,9 +26,11 @@ Ver en Santa Reserva: {link}
 def send_email_notifying_reservation(sender, instance, created, **kwargs):
     prefix = reservation_edit_prefix
     if created:
-        prefix = new_reservation_prefix + message_template
+        prefix = new_reservation_prefix
 
     url = "https://santa-reserva.herokuapp.com{}".format(instance.get_absolute_url())
-    msg = (prefix + message_template).format(r=instance, link=url)
+    msg = (prefix + message_template).format(
+        r=instance, user=instance.user.get_full_name(), link=url
+    )
 
     mail_admins("Notificación de reserva", msg, fail_silently=settings.DEBUG)

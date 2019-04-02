@@ -2,8 +2,8 @@ Recibís este email porque registraste una cuenta en {{ site.name }}.
 
 Para activar tu cuenta, por favor visita:
 
-http://{{ site.domain }}{% url 'django_registration_activate' activation_key %}
+https://{{ site.domain }}{% url 'django_registration_activate' activation_key %}
 
-Esa página expira en {{ expiration_days }} días.
+(Este código expira en {{ expiration_days }} días)
 
 Si no fuiste vos quién registró esta cuenta, no hace falta que hagas nada -- podés simplemente borrar este email.
