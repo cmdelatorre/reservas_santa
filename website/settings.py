@@ -127,10 +127,7 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 
 AUTH_USER_MODEL = "cuser.CUser"
 
-ADMINS = [
-    ("Admin", "santacatalinareservas@gmail.com"),
-    ("Elvira", "elvira@mailinator.com"),
-]
+ADMINS = [("Admin", "santacatalinareservas@gmail.com")]
 SERVER_EMAIL = "No contestar <santacatalinareservas+no-contestar@gmail.com>"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

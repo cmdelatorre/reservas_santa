@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.core.mail import mail_admins
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from reservations.models import Reservation
@@ -33,4 +34,10 @@ def send_email_notifying_reservation(sender, instance, created, **kwargs):
         r=instance, user=instance.user.get_full_name(), link=url
     )
 
-    mail_admins("Notificación de reserva", msg, fail_silently=settings.DEBUG)
+    send_mail(
+        "Notificación de reserva",
+        msg,
+        settings.SERVER_EMAIL,
+        [u.email for u in get_user_model().objects.filter(is_superuser=True)],
+        fail_silently=not settings.DEBUG,
+    )
