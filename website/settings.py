@@ -127,7 +127,11 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 
 django_heroku.settings(locals())
 
-ADMINS = [("Carlos", "santacatalinareservas@gmail.com")]
+ADMINS = [
+    ("Admin", "santacatalinareservas@gmail.com"),
+    ("Elvira", "elvira@mailinator.com"),
+]
+SERVER_EMAIL = "No contestar <santacatalinareservas+no-contestar@gmail.com>"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 

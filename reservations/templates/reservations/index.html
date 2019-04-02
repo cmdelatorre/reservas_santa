@@ -1,4 +1,4 @@
-{% extends "reservations/base.html" %}
+{% extends "base.html" %}
 
 {% block extrahead %}
   <link
@@ -49,9 +49,9 @@
         eventSources: eventSources,
         eventRender: function(event, element) {
           var helpText = "Habitación reservada por " + event.user;
-          var title = '<span class="text-muted">'+event.room+" <small>("+event.user+")</small></span>";
+          var title = $('<span class="text-muted">'+event.room+" <small>("+event.user+")</small></span>");
           if (event.owned) {
-            title = "<strong>"+event.room+"</strong> <small><em>(editar reserva)</em></small>";
+            title = "<strong>"+event.room+"</strong> <small>"+event.user+" <em>(editar reserva)</em></small>";
             helpText = "Reserva propia";
           }
 
@@ -91,13 +91,5 @@
 
 {% include "reservations/reservations_list_snippet.html" with reservations=next %}
 
-
-<div class="row pt-5">
-  <div class="col">
-    <h2>Pasadas</h2>
-  </div>
-</div>
-
-{% include "reservations/reservations_list_snippet.html" with reservations=past %}
 
 {% endblock %}
