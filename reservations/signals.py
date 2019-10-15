@@ -13,10 +13,9 @@ message_template = """
     Quién: {user} <{r.user.email}>
     Desde: {r.from_date}
     Hasta: {r.to_date}
-    Habitaciones: {r.rooms_str}
     Notas: {r.notes}
 
-Ver en Santa Reserva: {link}
+Para más detalles, ver {link}
 
 """
 
