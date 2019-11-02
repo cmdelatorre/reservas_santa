@@ -6,6 +6,8 @@
 {% block content %}
 
   <div class="modal-dialog" role="document">
+        <form action="{% url 'reservations:delete' object.id %}"
+                        method="POST" role="form" class="form-horizontal">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Confirme la cancelación</h5>
@@ -15,18 +17,16 @@
             </div>
             <div class="modal-footer">
 
-                <form action="{% url 'reservations:delete' object.id %}"
-                        method="POST" role="form" class="form-horizontal">
+
                 {% csrf_token %}
                 {% buttons %}
-                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">Mejor no, volver</button>
                         <button type="submit" class="btn btn-primary">Si, borrar</button>
-                    </div>
                 {% endbuttons %}
-                </form>
+
             </div>
         </div>
-    </div>
+        </form>
+  </div>
 
 {% endblock %}
