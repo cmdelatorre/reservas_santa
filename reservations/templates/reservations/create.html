@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col">
 
-  <form action="." method="post" class="form" >
+  <form action="." method="post" class="form" data-function="main-form">
     {% csrf_token %}
 
     {% bootstrap_form_errors form type='non_fields' %}
@@ -29,7 +29,15 @@
       {% buttons %}
 
       <div class="form-group bmd-form-group">
-        <button type="submit" class="btn btn-outline-success">Reservar</button>
+        <button
+                type="submit"
+                class="btn btn-outline-success"
+                data-function="save"
+                data-toggle="modal"
+                data-target="#confirmSaveModal">
+        >
+          Reservar
+        </button>
         {% if object %}
         <a
             href="{% url 'reservations:delete' object.id %}"
@@ -51,3 +59,50 @@
 </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirmSaveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Algunas consideraciones...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Por favor, tengan el cuidado de dejar los cuartos ordenados y limpios para que el que los sigue no tenga la sorpresa
+            de tener que limpiar antes de instalarse. <strong><b>No dejen basura</b></strong>
+          </p>
+          <ul>
+            <li>ni en la cocina</li>
+            <li>ni en los baños</li>
+            <li>ni en el hornito</li>
+          </ul>
+          <p>
+            <strong>Por favor llévense toda la basura.</strong> Perdonen que recordemos lo que es obvio, pero a veces nos olvidamos.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-function="confirm-save">De acuerdo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+        $('button[data-function="save"]').click(function (e) {
+            // Solo levanta el modal de confirmación
+            e.preventDefault();
+        });
+        $('button[data-function="confirm-save"]').click(function (e) {
+            $('form[data-function="main-form"]').submit();
+        });
+
+    });
+  </script>
+{% endblock extra_js %}

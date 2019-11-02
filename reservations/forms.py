@@ -64,6 +64,8 @@ class ReservationValidationFormMixin(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        if len(self.errors):
+            return
         # cc_myself = cleaned_data.get("cc_myself")
         # subject = cleaned_data.get("subject")
         rooms = cleaned_data.get("rooms")
@@ -108,11 +110,13 @@ class ReservationCreationForm(ReservationValidationFormMixin):
         label="Desde",
         widget=forms.DateInput(attrs={"type": "date"}),
         help_text="Fecha de la primer noche",
+        required=True,
     )
     to_date = forms.DateField(
         label="Hasta",
         widget=forms.DateInput(attrs={"type": "date"}),
         help_text="Fecha de salida (esa noche no se usa habitación)",
+        required=True,
     )
 
     class Meta:
