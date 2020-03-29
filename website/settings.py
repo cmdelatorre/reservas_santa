@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django_registration",
     "bootstrap4",
     "rooms",
+    "profiles",
 ]
 
 MIDDLEWARE = [
