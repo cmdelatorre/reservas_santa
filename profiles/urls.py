@@ -1,6 +1,6 @@
 from django.urls import path
 
-from reservations.views import ReservationsListView
+from profiles.views import EditProfile
 
 app_name = "profiles"
-urlpatterns = [path("", ReservationsListView.as_view(), name="profile")]
+urlpatterns = [path("<int:pk>/", EditProfile.as_view(), name="profile")]

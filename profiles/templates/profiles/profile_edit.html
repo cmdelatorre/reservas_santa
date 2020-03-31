@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+
+{% block nav_form_create %}
+<!-- No create form -->
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+
+  <form action="." method="post" class="form" data-function="main-form">
+    {% csrf_token %}
+
+    {% bootstrap_form_errors form type='non_fields' %}
+
+    <div class="row">
+      <div class="col">
+        {% bootstrap_form form %}
+      </div>
+    </div>
+
+
+      {% buttons %}
+
+      <div class="form-group bmd-form-group">
+        <button
+                type="submit"
+                class="btn btn-outline-success"
+                data-function="save"
+                data-toggle="modal"
+                data-target="#confirmSaveModal">
+        >
+          Reservar
+        </button>
+
+      </div>
+
+      {% endbuttons %}
+
+
+  </form>
+
+</div>
+</div>
+{% endblock %}
