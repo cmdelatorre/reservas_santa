@@ -1,8 +1,5 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django_registration.forms import validators
-
-from profiles.models import Profile
 
 
 CustomUser = get_user_model()
@@ -29,20 +26,18 @@ class UserProfileForm(forms.ModelForm):
     )
 
     class Meta:
+        user_fields = ("first_name", "last_name")
         model = CustomUser
-        fields = ("email", "first_name", "last_name", "wants_emails")
-        help_texts = {"email": "Requerida. Luego será usada para entrar al sitio."}
-        labels = {
-            "first_name": "Nombre",
-            "last_name": "Apellido",
-            "email": "Dirección de email",
-        }
+        fields = user_fields + ("wants_emails",)
+        labels = {"first_name": "Nombre", "last_name": "Apellido"}
 
-    def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
-        email_field = CustomUser.get_email_field_name()
-        self.fields[email_field].validators.append(
-            validators.CaseInsensitiveUnique(
-                CustomUser, email_field, validators.DUPLICATE_EMAIL
-            )
-        )
+    def save(self, *args, **kwargs):
+        profile = super().save(*args, **kwargs)
+        do_save_user = False
+        for field_name in self.Meta.user_fields:
+            if getattr(profile.user, field_name) != self.cleaned_data[field_name]:
+                setattr(profile.user, field_name, self.cleaned_data[field_name])
+                do_save_user = True
+        if do_save_user:
+            profile.user.save()
+        return profile

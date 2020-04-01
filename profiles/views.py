@@ -20,8 +20,10 @@ class EditProfile(LoginRequiredMixin, UpdateView):
             raise Http404("No tenés permiso para editar estas preferencias")
         return obj
 
-    #
-    # def get_context_data(self, **kwargs):
-    #     """Insert the form into the context dict."""
-    #     import ipdb; ipdb.set_trace()
-    #     return super().get_context_data(**kwargs)
+    def get_initial(self):
+        """Return the keyword arguments for instantiating the form."""
+        initial = super().get_initial()
+        if hasattr(self, "object"):
+            for field_name in UserProfileForm.Meta.user_fields:
+                initial.update({field_name: getattr(self.object.user, field_name)})
+        return initial
