@@ -2,29 +2,12 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django_registration.forms import RegistrationFormUniqueEmail
 
+from profiles.models import Profile
 from reservations.models import Reservation
 from rooms.models import Room
 
 
 CustomUser = get_user_model()
-
-
-# class MyCustomUserForm(RegistrationForm):
-
-#     first_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
-#     last_name = forms.CharField(max_length=30, required=False, help_text="Optional.")
-#     email = forms.EmailField(
-#         max_length=254, help_text="Required. Inform a valid email address."
-#     )
-
-#     class Meta(RegistrationForm.Meta):
-#         fields = (
-#             "first_name",
-#             "last_name",
-#             "email",
-#             "password1",
-#             "password2",
-#         )
 
 
 class MyCustomUserForm(RegistrationFormUniqueEmail):

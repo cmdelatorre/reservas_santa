@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from cuser.forms import AuthenticationForm
-from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
@@ -22,7 +21,6 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django_registration.backends.activation.views import RegistrationView
 
-from reservations.views import ReservationsListView
 from reservations.forms import MyCustomUserForm
 
 
@@ -33,6 +31,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("reservas/", include("reservations.urls", namespace="reservations")),
+    path("preferencias/", include("profiles.urls", namespace="profiles")),
     path(
         "usuarios/register/",
         RegistrationView.as_view(form_class=MyCustomUserForm),

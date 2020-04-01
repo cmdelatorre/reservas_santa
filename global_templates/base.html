@@ -51,15 +51,17 @@
 
           {% block login_link %}
               {% if request.user.is_authenticated %}
-                <span class="navbar-text">
-                    Hola {{ user.get_short_name }}
-                </span>
+                <p class="navbar-text navbar-right">
+                  Hola <a href="#" class="navbar-link">{{ user.get_short_name }}</a>
+                  {% if user.is_superuser %}
+                    <a class="btn btn-link text-primary" href="{% url 'admin:index' %}">Administrar</a>
+                  {% endif %}
 
-                {% if user.is_superuser %}
-                  <a class="btn btn-link text-primary" href="{% url 'admin:index' %}">Administrar</a>
-                {% endif %}
+                (<a class="navbar-link text-secondary" href="{% url 'profiles:edit' pk=user.profile.id %}"> preferencias </a> |
+                <a class="navbar-link text-secondary" href="{% url 'logout' %}"> desconectarse</a>)
 
-                <a class="btn btn-link text-secondary" href="{% url 'logout' %}"> (desconectarse)</a>
+                </p>
+
               {% else %}
                 <span class="navbar-text pr-3">
                     Welcome Guest
