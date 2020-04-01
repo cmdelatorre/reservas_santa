@@ -28,6 +28,7 @@ def send_email_notifying_reservation(sender, instance, created, **kwargs):
     if created:
         prefix = new_reservation_prefix
 
+    # Mail para Admins
     url = "https://santa-reserva.herokuapp.com{}".format(instance.get_absolute_url())
     msg = (prefix + message_template).format(
         r=instance, user=instance.user.get_full_name(), link=url
@@ -38,5 +39,24 @@ def send_email_notifying_reservation(sender, instance, created, **kwargs):
         msg,
         settings.SERVER_EMAIL,
         [u.email for u in get_user_model().objects.filter(is_superuser=True)],
+        fail_silently=not settings.DEBUG,
+    )
+
+    # Mail para suscriptos (parecido pero la URL es distinta)
+    url = "https://santa-reserva.herokuapp.com"
+    msg = (prefix + message_template).format(
+        r=instance, user=instance.user.get_full_name(), link=url
+    )
+
+    send_mail(
+        "Notificación de reserva",
+        msg,
+        settings.SERVER_EMAIL,
+        [
+            u.email
+            for u in get_user_model().objects.filter(
+                profile__wants_emails=True, is_superuser=False
+            )
+        ],
         fail_silently=not settings.DEBUG,
     )
