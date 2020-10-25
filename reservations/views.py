@@ -1,7 +1,8 @@
 from datetime import date, timedelta
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView
 from django.views.generic.edit import CreateView, UpdateView
@@ -10,6 +11,11 @@ from django.views.generic.detail import BaseDetailView
 from reservations.models import Reservation
 from reservations.forms import ReservationCreationForm
 from rooms.models import Room
+
+
+RESERVATION_CREATE_SUCCESS_MESSAGE = "Reserva registrada con éxito"
+RESERVATION_EDIT_SUCCESS_MESSAGE = "Se guardaron los cambios sobre la reserva"
+RESERVATION_DELETE_SUCCESS_MESSAGE = "Reserva eliminada"
 
 
 class ReservationsListView(LoginRequiredMixin, ListView):
@@ -31,7 +37,7 @@ class ReservationsListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ReservationCreate(LoginRequiredMixin, CreateView):
+class ReservationCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     login_url = reverse_lazy("login")
     model = Reservation
     form_class = ReservationCreationForm
@@ -43,8 +49,11 @@ class ReservationCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get_success_message(self, cleaned_data):
+        return RESERVATION_CREATE_SUCCESS_MESSAGE
 
-class ReservationEdit(LoginRequiredMixin, UpdateView):
+
+class ReservationEdit(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy("login")
     model = Reservation
     form_class = ReservationCreationForm
@@ -57,11 +66,24 @@ class ReservationEdit(LoginRequiredMixin, UpdateView):
             form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get_success_message(self, cleaned_data):
+        return RESERVATION_EDIT_SUCCESS_MESSAGE
 
-class ReservationDelete(LoginRequiredMixin, DeleteView):
+
+class ReservationDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy("login")
     model = Reservation
     success_url = reverse_lazy("reservations:index")
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        success_message = self.get_success_message()
+        if success_message:
+            messages.success(self.request, success_message)
+        return response
+
+    def get_success_message(self):
+        return RESERVATION_DELETE_SUCCESS_MESSAGE
 
 
 class RoomReservations(LoginRequiredMixin, BaseDetailView):
