@@ -61,7 +61,6 @@
                   {% if request.user.profile %}
                     <a class="navbar-link text-secondary" href="{% url 'profiles:edit' pk=user.profile.id %}"> preferencias </a> |
                   {% endif %}
-                  <a class="navbar-link text-secondary" href="{% url 'profiles:edit' pk=user.profile.id %}"> preferencias </a> |
                   <a class="navbar-link text-secondary" href="{% url 'logout' %}"> desconectarse</a>
                 )
 
