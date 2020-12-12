@@ -1,3 +1,5 @@
+from datetime import datetime, date
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django_registration.forms import RegistrationFormUniqueEmail
@@ -112,3 +114,58 @@ class ReservationCreationForm(ReservationValidationFormMixin):
             "rooms": "Seleccione múltiples habitaciones dejando apretado Ctrl",
             "notes": "Opcional. Cualquier mensaje que consideres oportuno.",
         }
+
+
+NOW = datetime.now()
+TARGET_YEAR = NOW.year + 1
+TURNS_START = date(TARGET_YEAR, 1, 1)
+TURNS_END = date(TARGET_YEAR, 2, 28)
+
+INITIAL_TURNS = [
+    "Irene",
+    "Calixto",
+    "Daniel",
+    "Alberto",
+    "María Antonia",
+    "Elvira",
+    "Marcela",
+    "Carlos",
+    "Jacinto",
+]
+
+
+def resolve_turns_order_for_year(year):
+    """Turns shift in a round-robin."""
+    N = len(INITIAL_TURNS)
+    cut = TARGET_YEAR % N
+    return INITIAL_TURNS[cut:] + INITIAL_TURNS[0:cut]
+
+
+class TurnsCreationForm(forms.Form):
+    """Form for the creation of holiday turns"""
+
+    year = forms.IntegerField(
+        label="Año para el que calcular los turnos",
+        required=True,
+        min_value=2000,
+        max_value=2100,
+        initial=TARGET_YEAR,
+    )
+    date_start = forms.DateField(
+        label="Día concreto en que empieza el primer turno",
+        required=True,
+        widget=forms.DateInput(attrs={"type": "date"}),
+        initial=TURNS_START,
+    )
+    date_end = forms.DateField(
+        label="Día en que termina el último turno",
+        required=True,
+        widget=forms.DateInput(attrs={"type": "date"}),
+        initial=TURNS_END,
+    )
+    responsibles = forms.MultipleChoiceField(
+        label="Indicar quienes participan en los turnos (Ctrl+click o Command+click para selección múltiple )",
+        required=True,
+        choices=[(i, i) for i in INITIAL_TURNS],
+        initial=INITIAL_TURNS,
+    )

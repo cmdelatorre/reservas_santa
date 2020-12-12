@@ -3,13 +3,15 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView, DeleteView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import BaseDetailView
 
+from reservations.forms import ReservationCreationForm, TurnsCreationForm
 from reservations.models import Reservation
-from reservations.forms import ReservationCreationForm
+from reservations.turns import compute_turns
 from rooms.models import Room
 
 
@@ -120,3 +122,35 @@ class RoomReservations(LoginRequiredMixin, BaseDetailView):
         ]
 
         return JsonResponse(data, safe=False)
+
+
+class TurnsPreparation(LoginRequiredMixin, FormView):
+    http_method_names = ["get", "post"]
+    form_class = TurnsCreationForm
+    template_name = "reservations/create_turns.html"
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+
+        reservations = compute_turns(**form.cleaned_data)
+        return render(
+            self.request,
+            "reservations/confirm_create_turns.html",
+            context={"reservations": reservations, "form": form},
+        )
+
+
+class TurnsCreation(SuccessMessageMixin, LoginRequiredMixin, FormView):
+    http_method_names = ["get", "post"]
+    form_class = TurnsCreationForm
+    template_name = "reservations/confirm_create_turns.html"
+    success_url = reverse_lazy("reservations:index")
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+
+        print("********** perro")
+        return super().form_valid(form)
+
+    def get_success_message(self, cleaned_data):
+        return "Turnos creados muttafaka"
