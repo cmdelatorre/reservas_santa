@@ -52,9 +52,11 @@
           {% block login_link %}
               {% if request.user.is_authenticated %}
                 <p class="navbar-text navbar-right">
-                  Hola <a href="#" class="navbar-link">{{ user.get_short_name }}</a>
+                  Hola {{ user.get_short_name | title }} 👋
+
                   {% if user.is_superuser %}
                     <a class="btn btn-link text-primary" href="{% url 'admin:index' %}">Administrar</a>
+                    <a class="btn btn-link text-secondary" href="{% url 'reservations:create_turns' %}">Crear turnos</a>
                   {% endif %}
 
                 (
