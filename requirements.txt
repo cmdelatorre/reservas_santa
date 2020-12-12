@@ -1,5 +1,5 @@
 Django==2.*
-django-bootstrap4==1.*
+django-bootstrap4==2.*
 django-heroku==0.*
 django-registration==3.*
 django-username-email==2.2.2
