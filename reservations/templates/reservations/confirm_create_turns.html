@@ -5,30 +5,49 @@
 
 {% block content %}
 
-  <div class="modal-dialog" role="document">
-        <form action="{% url 'reservations:confirm_turns' %}"
-                        method="POST" role="form" class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Confirme la creación de las siguientes reservas</h5>
-                </div>
-                <div class="modal-body">
-                    {{ reservations }}
 
-                    {% bootstrap_form form %}
+<div class="row">
+    <div class="col">
+        <h1>
+            Confirme la creación de las siguientes reservas
+        </h1>
+    </div>
+</div>
 
-                </div>
-                <div class="modal-footer">
+<div class="row">
+    <div class="col">
+        <ol>
+        {% for name, r in reservations.items %}
+            <li>
+                {{ name }}: <strong>{{ r.from_date|date:"j M" }}</strong> al <strong>{{ r.to_date|date:"j M" }}</strong>
+            </li>
+        {% endfor %}
+        </ol>
+    </div>
+</div>
 
-                    {% csrf_token %}
-                    {% buttons %}
-                            <button type="button" class="btn btn-secondary" onclick="history.back()">Mejor no, volver</button>
-                            <button type="submit" class="btn btn-primary">¡Si, crearlas!</button>
-                    {% endbuttons %}
 
-                </div>
-            </div>
+<div class="row">
+    <div class="col">
+        <h3>
+            Configuración
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form readonly action="{% url 'reservations:confirm_turns' %}"
+            method="POST" role="form" class="form-horizontal">
+            {% csrf_token %}
+
+            {% bootstrap_form form field_class="form-control-plaintext disabled" %}
+
+            {% buttons %}
+                <button type="button" class="btn btn-secondary" onclick="history.back()">Mejor no, volver</button>
+                <button type="submit" class="btn btn-primary">¡Si, crearlas!</button>
+            {% endbuttons %}
         </form>
-  </div>
-
+    </div>
+</div>
 {% endblock %}

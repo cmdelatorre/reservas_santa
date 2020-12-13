@@ -2,50 +2,36 @@
 {% load bootstrap4 %}
 
 
-{% block nav_form_create %}
-<!-- No create form -->
-{% endblock %}
+{% block title %}Confirmación{% endblock %}
 
 {% block content %}
+
 <div class="row">
   <div class="col">
-
-  <form action="." method="post" class="form" data-function="main-form">
-    {% csrf_token %}
-
-    {% bootstrap_form_errors form type='non_fields' %}
-
-    {% bootstrap_field form.year layout='' size='lg' %}
-
-    <div class="row">
-      <div class="col">
-        {% bootstrap_field form.date_start size='sm' %}
-      </div>
-        <div class="col">
-          {% bootstrap_field form.date_end layout='' size='sm' %}
-        </div>
-    </div>
-    {% bootstrap_field form.responsibles  %}
-
-
-
-    {% buttons %}
-
-      <div class="form-group bmd-form-group">
-        <button
-                type="submit"
-                class="btn btn-outline-success"
-                data-function="save">
-        >
-          Crear turnos
-        </button>
-      </div>
-
-    {% endbuttons %}
-
-
-  </form>
-
+    <h1>
+        Preparación de reservas para turnos de verano
+    </h1>
+  </div>
 </div>
+
+<div class="row">
+  <div class="col">
+    <form action="." method="post" class="form" data-function="main-form">
+      {% csrf_token %}
+
+      {% bootstrap_form form %}
+
+      {% buttons %}
+        <div class="form-group bmd-form-group">
+          <button
+                  type="submit"
+                  class="btn btn-outline-success"
+                  data-function="save">
+            Crear turnos
+          </button>
+        </div>
+      {% endbuttons %}
+    </form>
+  </div>
 </div>
 {% endblock %}
