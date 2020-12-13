@@ -9,7 +9,11 @@ from django.views.generic import ListView, DeleteView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import BaseDetailView
 
-from reservations.forms import ReservationCreationForm, TurnsCreationForm
+from reservations.forms import (
+    ReservationCreationForm,
+    TurnsCreationForm,
+    TurnsPreparationForm,
+)
 from reservations.models import Reservation
 from reservations.turns import compute_turns
 from rooms.models import Room
@@ -126,7 +130,7 @@ class RoomReservations(LoginRequiredMixin, BaseDetailView):
 
 class TurnsPreparation(LoginRequiredMixin, FormView):
     http_method_names = ["get", "post"]
-    form_class = TurnsCreationForm
+    form_class = TurnsPreparationForm
     template_name = "reservations/create_turns.html"
 
     def form_valid(self, form):
@@ -136,10 +140,14 @@ class TurnsPreparation(LoginRequiredMixin, FormView):
         return render(
             self.request,
             "reservations/confirm_create_turns.html",
-            context={"reservations": reservations, "form": form},
+            context={
+                "reservations": reservations,
+                "form": TurnsCreationForm(form.cleaned_data),
+            },
         )
 
 
+# TBD: admins only
 class TurnsCreation(SuccessMessageMixin, LoginRequiredMixin, FormView):
     http_method_names = ["get", "post"]
     form_class = TurnsCreationForm
@@ -149,8 +157,12 @@ class TurnsCreation(SuccessMessageMixin, LoginRequiredMixin, FormView):
     def form_valid(self, form):
         """If the form is valid, redirect to the supplied URL."""
 
-        print("********** perro")
+        reservations = compute_turns(**form.cleaned_data)
+        all_rooms = Room.objects.all()
+        for r in reservations.values():
+            r.save()
+            r.rooms.add(*all_rooms)
         return super().form_valid(form)
 
     def get_success_message(self, cleaned_data):
-        return "Turnos creados muttafaka"
+        return "Turnos creados para el {}".format(cleaned_data["year"])
