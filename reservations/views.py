@@ -1,10 +1,12 @@
 from datetime import date, timedelta
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DeleteView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import BaseDetailView
@@ -128,6 +130,7 @@ class RoomReservations(LoginRequiredMixin, BaseDetailView):
         return JsonResponse(data, safe=False)
 
 
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name="dispatch")
 class TurnsPreparation(LoginRequiredMixin, FormView):
     http_method_names = ["get", "post"]
     form_class = TurnsPreparationForm
@@ -147,7 +150,7 @@ class TurnsPreparation(LoginRequiredMixin, FormView):
         )
 
 
-# TBD: admins only
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name="dispatch")
 class TurnsCreation(SuccessMessageMixin, LoginRequiredMixin, FormView):
     http_method_names = ["get", "post"]
     form_class = TurnsCreationForm
