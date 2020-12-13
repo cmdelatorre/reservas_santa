@@ -154,7 +154,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": (
-                "%(asctime)s [%(process)d] [%(levelname)s] "
+                "%(asctime)s [%(levelname)s] "
                 + "pathname=%(pathname)s lineno=%(lineno)s "
                 + "funcname=%(funcName)s %(message)s"
             ),
@@ -168,7 +168,10 @@ LOGGING = {
             "formatter": "verbose",
         }
     },
-    "loggers": {"django": {"handlers": ["console"], "propagate": True}},
+    "loggers": {
+        "django": {"handlers": ["console"], "propagate": True},
+        "reservations": {"level": "DEBUG", "handlers": ["console"], "propagate": True},
+    },
 }
 
 #
