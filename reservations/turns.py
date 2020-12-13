@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from reservations.models import Reservation
 
@@ -8,7 +9,8 @@ TURN_DEFAULT_NOTE_TEMPLATE = "Turno de verano {} de {}"
 
 # The following function must be revised if the TURN_RESPONSIBLES change in any way!
 def resolve_turns_in_order_for_year(year):
-    """Turns shift in a round-robin. """
+    """Turns shift in a round-robin. Compute the turns order for the given year."""
+
     people = list(settings.TURN_RESPONSIBLES.keys())
     N = len(people)
     cut = N - (year - settings.INITIAL_YEAR_COUNT) % N
@@ -16,11 +18,17 @@ def resolve_turns_in_order_for_year(year):
 
 
 def compute_turns(year=None, date_start=None, turn_length=None):
-    # períodos = ...
-    # responsibles_order = ...  # definir el orden de los responsables para el año en curso
-    # reservations = compute_turn_reservations()
-    from django.contrib.auth import get_user_model
+    """Build the Reservation objects (don't save) corresponding to the summer turns for the given
+    year.
 
+    Args:
+        year (int): [description]. Defaults to None.
+        date_start (datetime.date): [description]. Defaults to None.
+        turn_length (int): [description]. Defaults to None.
+
+    Returns:
+        dict (ordered): A Reservation object for each turn. Keys are turn names.
+    """
     turns = {}
     turn_initial_date = date_start
     for turn_name in resolve_turns_in_order_for_year(year):
