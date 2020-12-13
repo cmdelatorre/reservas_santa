@@ -171,6 +171,32 @@ LOGGING = {
     "loggers": {"django": {"handlers": ["console"], "propagate": True}},
 }
 
+#
+# Turns computation settings
+#
+
+INITIAL_YEAR_COUNT = 2020  # Year corresponding to the following turns configuration
+"""2020
+Elvira :  9 al 16 de enero
+María Antonia 17 al 24 de enero
+Marcela 25 al 1 de febrero
+Carlos 2 al 10 de febrero
+Daniel 11 al 18 de febrero
+Jacinto 19 al 26 de febrero
+Calixto 1 al 8 de enero
+"""
+
+# Production DB IDs of the Users. The order is relevant!
+TURN_RESPONSIBLES = {
+    "Elvira": 3,  # Elvira
+    "María Antonia": 13,  # Gonzalo
+    "Marcela": 6,  # Marcela
+    "Carlos": 32,  # Adriana
+    "Daniel": 35,  # María
+    "Jacinto": 18,  # Jacinto
+    "Calixto": 4,  # Ana
+}
+
 
 django_heroku.settings(locals(), logging=False)
 
