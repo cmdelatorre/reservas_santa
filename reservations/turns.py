@@ -4,7 +4,7 @@ from django.conf import settings
 from reservations.models import Reservation
 
 
-TURN_DEFAULT_NOTE_TEMPLATE = "Turno de verano de {}"
+TURN_DEFAULT_NOTE_TEMPLATE = "Turno de verano {} de {}"
 
 # The following function must be revised if the TURN_RESPONSIBLES change in any way!
 def resolve_turns_in_order_for_year(year):
@@ -29,7 +29,7 @@ def compute_turns(year=None, date_start=None, turn_length=None):
             from_date=turn_initial_date,
             to_date=turn_final_date,
             user=get_user_model().objects.get(pk=settings.TURN_RESPONSIBLES[turn_name]),
-            notes=TURN_DEFAULT_NOTE_TEMPLATE.format(turn_name),
+            notes=TURN_DEFAULT_NOTE_TEMPLATE.format(year, turn_name),
         )
         turns[turn_name] = reservation
         turn_initial_date = turn_final_date + timedelta(
