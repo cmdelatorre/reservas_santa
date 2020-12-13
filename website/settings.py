@@ -194,7 +194,7 @@ TURN_RESPONSIBLES = {
     "Elvira": 3,  # Elvira
     "María Antonia": 13,  # Gonzalo
     "Marcela": 6,  # Marcela
-    "Carlos": 32,  # Adriana
+    "Carlos": 30,  # Adriana
     "Daniel": 35,  # María
     "Jacinto": 18,  # Jacinto
     "Calixto": 4,  # Ana
