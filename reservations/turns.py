@@ -1,8 +1,13 @@
+import logging
+
 from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from reservations.models import Reservation
+
+
+logger = logging.getLogger(__name__)
 
 
 TURN_DEFAULT_NOTE_TEMPLATE = "Turno de verano {} de {}"
@@ -33,10 +38,12 @@ def compute_turns(year=None, date_start=None, turn_length=None):
     turn_initial_date = date_start
     for turn_name in resolve_turns_in_order_for_year(year):
         turn_final_date = turn_initial_date + timedelta(days=turn_length - 1)
+        user_id = settings.TURN_RESPONSIBLES[turn_name]
+        logger.info(f"Preparing turn configuration for {turn_name} ({user_id})")
         reservation = Reservation(
             from_date=turn_initial_date,
             to_date=turn_final_date,
-            user=get_user_model().objects.get(pk=settings.TURN_RESPONSIBLES[turn_name]),
+            user=get_user_model().objects.get(pk=user_id),
             notes=TURN_DEFAULT_NOTE_TEMPLATE.format(year, turn_name),
         )
         turns[turn_name] = reservation
