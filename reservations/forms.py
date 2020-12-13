@@ -1,10 +1,8 @@
-from datetime import datetime, date
-
+from datetime import datetime, date, timedelta
 from django import forms
 from django.contrib.auth import get_user_model
 from django_registration.forms import RegistrationFormUniqueEmail
 
-from profiles.models import Profile
 from reservations.models import Reservation
 from rooms.models import Room
 
@@ -116,33 +114,12 @@ class ReservationCreationForm(ReservationValidationFormMixin):
         }
 
 
-NOW = datetime.now()
-TARGET_YEAR = NOW.year + 1
+TARGET_YEAR = datetime.now().year + 1
 TURNS_START = date(TARGET_YEAR, 1, 1)
-TURNS_END = date(TARGET_YEAR, 2, 28)
-
-INITIAL_TURNS = [
-    "Irene",
-    "Calixto",
-    "Daniel",
-    "Alberto",
-    "María Antonia",
-    "Elvira",
-    "Marcela",
-    "Carlos",
-    "Jacinto",
-]
 
 
-def resolve_turns_order_for_year(year):
-    """Turns shift in a round-robin."""
-    N = len(INITIAL_TURNS)
-    cut = TARGET_YEAR % N
-    return INITIAL_TURNS[cut:] + INITIAL_TURNS[0:cut]
-
-
-class TurnsCreationForm(forms.Form):
-    """Form for the creation of holiday turns"""
+class TurnsPreparationForm(forms.Form):
+    """Form for the definition of holiday turns."""
 
     year = forms.IntegerField(
         label="Año para el que calcular los turnos",
@@ -157,15 +134,30 @@ class TurnsCreationForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date"}),
         initial=TURNS_START,
     )
-    date_end = forms.DateField(
-        label="Día en que termina el último turno",
+    turn_length = forms.IntegerField(
+        label="Largo (en días) deseado para cada turno",
         required=True,
-        widget=forms.DateInput(attrs={"type": "date"}),
-        initial=TURNS_END,
+        min_value=1,
+        max_value=365,
+        initial=8,
     )
-    responsibles = forms.MultipleChoiceField(
-        label="Indicar quienes participan en los turnos (Ctrl+click o Command+click para selección múltiple )",
+
+
+class TurnsCreationForm(forms.Form):
+    """Form for the creation of holiday turns"""
+
+    year = forms.IntegerField(
+        label="Año para el que calcular los turnos",
         required=True,
-        choices=[(i, i) for i in INITIAL_TURNS],
-        initial=INITIAL_TURNS,
+        widget=forms.widgets.Input(attrs={"readonly": True}),
+    )
+    date_start = forms.DateField(
+        label="Día concreto en que empieza el primer turno",
+        required=True,
+        widget=forms.widgets.Input(attrs={"readonly": True}),
+    )
+    turn_length = forms.IntegerField(
+        label="Largo (en días) deseado para cada turno",
+        required=True,
+        widget=forms.widgets.Input(attrs={"readonly": True}),
     )
