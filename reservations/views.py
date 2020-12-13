@@ -1,3 +1,5 @@
+import logging
+
 from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -20,6 +22,8 @@ from reservations.models import Reservation
 from reservations.turns import compute_turns
 from rooms.models import Room
 
+
+logger = logging.getLogger(__name__)
 
 RESERVATION_CREATE_SUCCESS_MESSAGE = "Reserva registrada con éxito"
 RESERVATION_EDIT_SUCCESS_MESSAGE = "Se guardaron los cambios sobre la reserva"
@@ -162,9 +166,13 @@ class TurnsCreation(SuccessMessageMixin, LoginRequiredMixin, FormView):
 
         reservations = compute_turns(**form.cleaned_data)
         all_rooms = Room.objects.all()
-        for r in reservations.values():
+        for name, r in reservations.items():
+            logger.info(
+                f"Creating turn reservation for {name}, from {r.from_date} to {r.to_date}"
+            )
             r.save()
             r.rooms.add(*all_rooms)
+
         return super().form_valid(form)
 
     def get_success_message(self, cleaned_data):
