@@ -30,6 +30,7 @@ admin.autodiscover()
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("generalidades/", TemplateView.as_view(template_name="doc.html"), name="doc"),
     path("reservas/", include("reservations.urls", namespace="reservations")),
     path("preferencias/", include("profiles.urls", namespace="profiles")),
     path(
