@@ -21,16 +21,30 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django_registration.backends.activation.views import RegistrationView
 
+from .fuel import fetch_fuel_price
 from reservations.forms import MyCustomUserForm
 
 
 admin.autodiscover()
 
 
+def doc_view():
+    fuel_price = fetch_fuel_price()
+    nightly_cost = round(2.5 * fuel_price)
+    do_format = lambda s: ("%.2f" % s).replace(".", ",")  # 12,34
+    return TemplateView.as_view(
+        template_name="doc.html",
+        extra_context={
+            "fuel_price": do_format(fuel_price),
+            "nightly_cost": nightly_cost,
+        },
+    )
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
-    path("generalidades/", TemplateView.as_view(template_name="doc.html"), name="doc"),
+    path("generalidades/", doc_view(), name="doc"),
     path("reservas/", include("reservations.urls", namespace="reservations")),
     path("preferencias/", include("profiles.urls", namespace="profiles")),
     path(
