@@ -21,7 +21,7 @@ from reservations.forms import (
 from reservations.models import Reservation
 from reservations.turns import compute_turns
 from rooms.models import Room
-
+from website.fuel import fetch_fuel_price
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +63,11 @@ class ReservationCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_message(self, cleaned_data):
         return RESERVATION_CREATE_SUCCESS_MESSAGE
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["fuel_price"] = fetch_fuel_price()
+        return context
 
 
 class ReservationEdit(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
