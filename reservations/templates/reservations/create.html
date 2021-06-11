@@ -26,7 +26,10 @@
     {% bootstrap_field form.rooms layout='' size='lg' %}
     {% bootstrap_field form.notes  %}
 
-      {% buttons %}
+    <input id="fuel_price" value="{{ fuel_price }}" hidden="true">
+    
+    
+    {% buttons %}
 
       <div class="form-group bmd-form-group">
         <button
@@ -73,6 +76,10 @@
           </button>
         </div>
         <div class="modal-body">
+          <p>No olviden llevar algo de plata para la 
+            <a href="{% url 'doc' %}#contribucion">contribuir con el mantenimiento.</a> 
+            <span id="ammount-placeholder"></span>
+          </p>
           {% include "doc_basura_snippet.html" %}
         </div>
         <div class="modal-footer">
@@ -91,6 +98,28 @@
         $('button[data-function="confirm-save"]').click(function (e) {
             $('form[data-function="main-form"]').submit();
         });
+        $('#confirmSaveModal').on('show.bs.modal', function (e) {
+          var start = $("input#id_from_date").val();
+          var end = $("input#id_to_date").val();
+          console.log(start);
+          console.log(end);
+          start = Date.parse(start);
+          end = Date.parse(end);
+          var totalDays = NaN;
+          if (start && end && start < end) {
+            totalDays = Math.floor((end - start) / 1000 / 60 / 60 / 24); //milliseconds: /1000 / 60 / 60 /24
+            var fuel_price = $("input#fuel_price").val();
+            $("span#ammount-placeholder").text(
+              "Serían unos $" 
+              + Math.round(fuel_price * totalDays * 2.5)
+              + " por los "
+              + totalDays
+              + " días."
+            );
+          }
+          console.log(totalDays);
+
+        })
 
     });
   </script>
