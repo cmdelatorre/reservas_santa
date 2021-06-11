@@ -5,3 +5,4 @@ django-registration==3.*
 django-username-email==2.2.2
 gunicorn==19.9.0
 psycopg2-binary==2.8.6
+requests==2.*
