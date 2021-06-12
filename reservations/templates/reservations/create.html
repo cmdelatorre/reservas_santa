@@ -98,6 +98,8 @@
         $('button[data-function="confirm-save"]').click(function (e) {
             $('form[data-function="main-form"]').submit();
         });
+
+        {% if fuel_price %}
         $('#confirmSaveModal').on('show.bs.modal', function (e) {
           var start = $("input#id_from_date").val();
           var end = $("input#id_to_date").val();
@@ -120,7 +122,7 @@
           console.log(totalDays);
 
         })
-
     });
+    {% endif %}
   </script>
 {% endblock extra_js %}

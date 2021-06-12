@@ -29,13 +29,15 @@ admin.autodiscover()
 
 
 def doc_view():
+    nightly_cost = None
     fuel_price = fetch_fuel_price()
-    nightly_cost = round(2.5 * fuel_price)
-    do_format = lambda s: ("%.2f" % s).replace(".", ",")  # 12,34
+    if fuel_price:
+        nightly_cost = round(2.5 * fuel_price)
+        fuel_price = ("%.2f" % fuel_price).replace(".", ",")  # 12,34
     return TemplateView.as_view(
         template_name="doc.html",
         extra_context={
-            "fuel_price": do_format(fuel_price),
+            "fuel_price": fuel_price,
             "nightly_cost": nightly_cost,
         },
     )

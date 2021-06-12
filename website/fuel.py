@@ -29,6 +29,7 @@ def fetch_fuel_price():
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         logger.exception(e)
+        return None
 
     response_data = response.json()
 
