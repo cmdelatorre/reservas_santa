@@ -1,5 +1,8 @@
+wheel
 -r requirements.txt
 
 black==18.9b0
 pre-commit==2.*
 django-extensions==2.*
+django_debug_toolbar==3.2.4
+ipython
