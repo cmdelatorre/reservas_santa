@@ -34,7 +34,14 @@
         {color: '#247BA0', textColor: 'black'}, {color: '#FF1654', textColor: 'black'}
       ];  // an arbitrary number of options, hoping they'll be more than the number of rooms
 
-      var eventSources = [{% for r in rooms %}
+      var eventSources = [
+        {
+          "end": "2022-04-14",
+          "start": "2022-04-14",
+          'temp_max': 27.0,
+          'temp_min': 13.0
+        },
+      {% for r in rooms %}
         {  // {{ r.name }}
           url: "{% url 'reservations:events' r.id %}",
           color: sourcesFormat[{{forloop.counter0}}].color,
@@ -48,7 +55,7 @@
         firstDay: 1,  // Monday
         eventSources: eventSources,
         eventRender: function(event, element) {
-          var helpText = "Habitación reservada por " + event.user;
+          var helpText = "Habitación reservada por " + event.user + event.temp_max;
           var title = $('<span class="text-muted">'+event.room+" <small>("+event.user+")</small></span>");
           if (event.owned) {
             title = "<strong>"+event.room+"</strong> <small>"+event.user+" <em>(editar reserva)</em></small>";
@@ -90,6 +97,81 @@
   </div>
 </div>
 
+<div class="row pt-5">
+      
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th id="titulo">&nbsp;</th></tr><tr><th id="maximas">&nbsp;</th></tr><tr><th id="titulo_dia">&nbsp;</th></tr>
+          </thead>
+          <tbody><tr><td><div id="titulo_ind">&nbsp;</div></td></tr><tr><td id="titulo_fila">Prob. Precipitación</td></tr><tr><td id="titulo_fila">Temperatura (°C)</td></tr><tr><td id="titulo_fila">Viento (km/h)</td></tr><tr><td id="titulo_fila">Dirección Predominante</td></tr><tr><td id="titulo_fila">Ráfagas (km/h)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="4" id="titulo">Jueves 14</th></tr><tr><th colspan="4" id="maximas">Temp. Máx 24° | Temp. Mín 5°</th></tr><tr><th id="titulo_dia"><div title="Madrugada">M</div></th><th id="titulo_dia"><div title="Mañana">M</div></th><th id="titulo_dia"><div title="Tarde">T</div></th><th id="titulo_dia"><div title="Noche">N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="">                    </div></td><td><div title="">                    </div></td><td><div title="">                    </div></td><td><div title="Despejado"><img alt="Brand" id="pronos_icono_e0" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/5.png" style="float:center;position:relative" height="45" class="image-responsive"></div></td></tr><tr><td id="campo"></td><td id="campo"></td><td id="campo"></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#99CC00">13</td></tr><tr><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF">13 - 22</td></tr><tr><td id="flecha"></td><td id="flecha"></td><td id="flecha"></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF"></td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="4" id="titulo">Viernes 15</th></tr><tr><th colspan="4" id="maximas">Temp. Máx 22° | Temp. Mín 7°</th></tr><tr><th id="titulo_dia"><div title="Madrugada">M</div></th><th id="titulo_dia"><div title="Mañana">M</div></th><th id="titulo_dia"><div title="Tarde">T</div></th><th id="titulo_dia"><div title="Noche">N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Despejado"><img alt="Brand" id="pronos_icono_e1" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/5.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Ligeramente nublado"><img alt="Brand" id="pronos_icono_e1" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e1" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Mayormente nublado"><img alt="Brand" id="pronos_icono_e1" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/38.png" style="float:center;position:relative" height="45" class="image-responsive"></div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Muy Baja">0 - 10%</div></td><td id="campo"><div title="Muy Baja">0 - 10%</div></td></tr><tr><td id="campo" style="background-color:#BDD7EE">7</td><td id="campo" style="background-color:#E5FC08">15</td><td id="campo" style="background-color:#FFD14F">22</td><td id="campo" style="background-color:#E5FC08">17</td></tr><tr><td id="campo" style="background-color:#FFF">13 - 22</td><td id="campo" style="background-color:#FFF">13 - 22</td><td id="campo" style="background-color:#FFF">13 - 22</td><td id="campo" style="background-color:#FFF">13 - 22</td></tr><tr><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="4" id="titulo">Sábado 16</th></tr><tr><th colspan="4" id="maximas">Temp. Máx 24° | Temp. Mín 10°</th></tr><tr><th id="titulo_dia"><div title="Madrugada">M</div></th><th id="titulo_dia"><div title="Mañana">M</div></th><th id="titulo_dia"><div title="Tarde">T</div></th><th id="titulo_dia"><div title="Noche">N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e2" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/26.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e2" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e2" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e2" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/26.png" style="float:center;position:relative" height="45" class="image-responsive"></div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#99CC00">10</td><td id="campo" style="background-color:#99CC00">13</td><td id="campo" style="background-color:#FFD14F">24</td><td id="campo" style="background-color:#99CC00">12</td></tr><tr><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td></tr><tr><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="NE"><img alt="Brand" id="v_norteste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-ne.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="NE"><img alt="Brand" id="v_norteste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-ne.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="2" id="titulo">Domingo 17</th></tr><tr><th colspan="2" id="maximas">Máx 23° | Mín 9°</th></tr><tr><th id="titulo_dia"><div title="Madrugada/Mañana">M/M</div></th><th id="titulo_dia"><div title="Tarde/Noche">T/N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e3" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e3" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#BDD7EE">9</td><td id="campo" style="background-color:#FFD14F">23</td></tr><tr><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td></tr><tr><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="NE"><img alt="Brand" id="v_norteste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-ne.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="2" id="titulo">Lunes 18</th></tr><tr><th colspan="2" id="maximas">Máx 25° | Mín 12°</th></tr><tr><th id="titulo_dia"><div title="Madrugada/Mañana">M/M</div></th><th id="titulo_dia"><div title="Tarde/Noche">T/N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Algo nublado"><img alt="Brand" id="pronos_icono_e4" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/19.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Algo nublado"><img alt="Brand" id="pronos_icono_e4" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/19.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#99CC00">12</td><td id="campo" style="background-color:#FFC000">25</td></tr><tr><td id="campo" style="background-color:#FFF">13 - 22</td><td id="campo" style="background-color:#FFF">13 - 22</td></tr><tr><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="N"><img alt="Brand" id="v_norte" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-n.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="2" id="titulo">Martes 19</th></tr><tr><th colspan="2" id="maximas">Máx 27° | Mín 13°</th></tr><tr><th id="titulo_dia"><div title="Madrugada/Mañana">M/M</div></th><th id="titulo_dia"><div title="Tarde/Noche">T/N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Algo nublado"><img alt="Brand" id="pronos_icono_e5" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/19.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e5" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#99CC00">13</td><td id="campo" style="background-color:#FFC000">27</td></tr><tr><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td></tr><tr><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <table id="tabla_ind">
+          <thead><tr><th colspan="2" id="titulo">Miércoles 20</th></tr><tr><th colspan="2" id="maximas">Máx 27° | Mín 16°</th></tr><tr><th id="titulo_dia"><div title="Madrugada/Mañana">M/M</div></th><th id="titulo_dia"><div title="Tarde/Noche">T/N</div></th></tr>
+          </thead>
+          <tbody><tr><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e6" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td><td><div title="Parcialmente nublado"><img alt="Brand" id="pronos_icono_e6" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/25.png" style="float:center;position:relative" height="45" class="image-responsive">                        </div></td></tr><tr><td id="campo"><div title="Nula">0%</div></td><td id="campo"><div title="Nula">0%</div></td></tr><tr><td id="campo" style="background-color:#E5FC08">16</td><td id="campo" style="background-color:#FFC000">27</td></tr><tr><td id="campo" style="background-color:#FFF">7 - 12</td><td id="campo" style="background-color:#FFF">7 - 12</td></tr><tr><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td><td id="flecha"><div title="NO"><img alt="Brand" id="v_noroeste" src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/v-no.png" style="float:center;position:relative" height="15" class="image-responsive"></div></td></tr><tr><td id="campo" style="background-color:#FFF">-</td><td id="campo" style="background-color:#FFF">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+</div>
 
 <div class="row pt-5">
   <div class="col">

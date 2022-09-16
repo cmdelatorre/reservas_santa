@@ -36,10 +36,7 @@ def doc_view():
         fuel_price = ("%.2f" % fuel_price).replace(".", ",")  # 12,34
     return TemplateView.as_view(
         template_name="doc.html",
-        extra_context={
-            "fuel_price": fuel_price,
-            "nightly_cost": nightly_cost,
-        },
+        extra_context={"fuel_price": fuel_price, "nightly_cost": nightly_cost},
     )
 
 
