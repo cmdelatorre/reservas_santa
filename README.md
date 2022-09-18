@@ -23,3 +23,9 @@ Seguí este tutorial para poner en marcha la app en Heroku:
 https://devcenter.heroku.com/articles/getting-started-with-python
 
 De paso, indica todo el tipo de operaciones que se pueden realizar.
+
+## Para desplegar en PythonAnywhere
+
+Siguiendo esto: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps
+
+Hace falta un `reservas_santa/website/.env` con las envvars para producción.
