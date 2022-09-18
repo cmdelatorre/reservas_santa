@@ -29,3 +29,10 @@ De paso, indica todo el tipo de operaciones que se pueden realizar.
 Siguiendo esto: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps
 
 Hace falta un `reservas_santa/website/.env` con las envvars para producción.
+
+### TBD
+
+1. Migrar datos
+  1. Usuarios
+  2. Reservas. Ojo con las relaciones, que cambiarán los IDs
+  3. Scriptearlo para dsps hacerlo de una en la cuenta definitiva. 
