@@ -3,6 +3,7 @@ django-bootstrap4==2.*
 django-heroku==0.*
 django-registration==3.*
 django-username-email==2.2.2
-gunicorn==19.9.0
-psycopg2-binary==2.9.3
 requests==2.*
+
+mysqlclient==2.1.*
+python-dotenv==0.21.*
