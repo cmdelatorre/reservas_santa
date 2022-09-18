@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "bootstrap4",
     "rooms",
     "profiles",
-    "django_extensions",
 ]
 
 
