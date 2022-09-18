@@ -19,6 +19,7 @@ price_cache = None
 
 
 def fetch_fuel_price():
+    return None  # Hack until I can make it work in PythonAnywhere
     global price_cache
 
     if price_cache:
