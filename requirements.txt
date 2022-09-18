@@ -4,5 +4,6 @@ django-heroku==0.*
 django-registration==3.*
 django-username-email==2.2.2
 gunicorn==19.9.0
+psycopg2>=2.8,<2.9
 psycopg2-binary>=2.8,<2.9
 requests==2.*
