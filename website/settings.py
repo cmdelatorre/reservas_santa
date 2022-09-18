@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "1n!p*xwg$-%h$*_fqxxe+iu52aelems96m)nt-29#&=54d^l!l"
+SECRET_KEY = os.getenv("SECRET_KEY")
+if SECRET_KEY is None:
+    print("WARNING: No SECRET_KEY envvar found! A public one will be used.")
+    SECRET_KEY = "1n!p*xwg$-%h$*_fxe+iu56m)nt-29#&d^l!l"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -44,7 +47,9 @@ INSTALLED_APPS = [
     "bootstrap4",
     "rooms",
     "profiles",
+    "django_extensions",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -87,6 +92,28 @@ DATABASES = {
     }
 }
 
+print("If no valid config is found, then it'll default to SQLite...")
+DB_HOST = os.getenv("DB_HOST")
+if DB_HOST is not None:
+    db = {
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": DB_HOST,
+    }
+    if not all(db.values()):
+        print("No complete DB configuration found. Defaulting to SQLite.")
+        invalid = [
+            k for k in ("HOST", "NAME", "USER", "ENGINE", "PASSWORD") if db[k] is None
+        ]
+        print("\tInvalid value for key: " + ", ".join(invalid))
+    else:  # Valid config items found
+        print(
+            "\tDB configuration found:"
+            + str({k: db[k] for k in ("HOST", "NAME", "USER")})
+        )
+        DATABASES["default"] = db
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -199,9 +226,6 @@ TURN_RESPONSIBLES = {
     "Jacinto": 18,  # Jacinto
     "Calixto": 4,  # Ana
 }
-
-
-django_heroku.settings(locals(), logging=False)
 
 
 try:
