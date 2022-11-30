@@ -36,6 +36,7 @@ Hace falta un `reservas_santa/website/.env` con las envvars para producción.
 1. Cuenta definitiva en PythonAnywhere
   1. Crear cuenta
   2. Configurar app
+    1. Voy por acá: https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/#additional-configuration
 1. Migrar datos
   1. Usuarios
   2. Reservas. Ojo con las relaciones, que cambiarán los IDs ?
