@@ -26,13 +26,17 @@ De paso, indica todo el tipo de operaciones que se pueden realizar.
 
 ## Para desplegar en PythonAnywhere
 
-Siguiendo esto: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps
+https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
+
+Luego siguiendo esto: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps
 
 Hace falta un `reservas_santa/website/.env` con las envvars para producción.
 
 ### TBD
-
+1. Cuenta definitiva en PythonAnywhere
+  1. Crear cuenta
+  2. Configurar app
 1. Migrar datos
   1. Usuarios
-  2. Reservas. Ojo con las relaciones, que cambiarán los IDs
-  3. Scriptearlo para dsps hacerlo de una en la cuenta definitiva. 
+  2. Reservas. Ojo con las relaciones, que cambiarán los IDs ?
+  3. Scriptearlo para dsps hacerlo de una en la cuenta definitiva. ?
