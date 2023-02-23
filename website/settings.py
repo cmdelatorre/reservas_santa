@@ -217,13 +217,13 @@ Calixto 1 al 8 de enero
 
 # Production DB IDs of the Users. The order is relevant!
 TURN_RESPONSIBLES = {
-    "Elvira": 3,  # Elvira
-    "María Antonia": 13,  # Gonzalo
-    "Marcela": 6,  # Marcela
-    "Carlos": 30,  # Adriana
-    "Daniel": 35,  # María
-    "Jacinto": 18,  # Jacinto
-    "Calixto": 4,  # Ana
+    "Elvira": 5,  # Elvira
+    "María Antonia": 15,  # Gonzalo
+    "Marcela": 8,  # Marcela
+    "Carlos": 31,  # Adriana
+    "Daniel": 33,  # María
+    "Jacinto": 20,  # Jacinto
+    "Calixto": 6,  # Ana
 }
 
 
