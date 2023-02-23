@@ -108,3 +108,4 @@ venv.bak/
 .vscode/
 staticfiles/
 local_settings.py
+profiles/load_initial_users.py
